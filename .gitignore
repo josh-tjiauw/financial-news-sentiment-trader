@@ -1,0 +1,16 @@
+﻿.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+*.pkl
+*.joblib
+*.npz
+.env
+.DS_Store
+
+# Keep directory placeholders, but avoid committing large datasets by default.
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
