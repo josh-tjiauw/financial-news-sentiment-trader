@@ -1,6 +1,6 @@
 ﻿# Financial News Sentiment Trader
 
-A resume-ready rebuild of the original AI stocks class project: a Python machine learning pipeline that analyzes financial news, predicts next-day stock movement, and backtests trading strategies against market benchmarks.
+AI stocks class project: a Python machine learning pipeline that analyzes financial news, predicts next-day stock movement, and backtests trading strategies against market benchmarks.
 
 ## Project goal
 
