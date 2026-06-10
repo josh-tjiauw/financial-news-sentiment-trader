@@ -1,4 +1,4 @@
-﻿# Project Roadmap
+# Project Roadmap
 
 ## Phase 1: Foundation
 
@@ -11,10 +11,11 @@
 
 ## Phase 2: Data pipeline
 
-- [ ] Add news ingestion adapter
-- [ ] Add yfinance price ingestion adapter
-- [ ] Add dataset builder that joins news and prices by ticker/date
-- [ ] Store reproducible sample datasets under `data/processed`
+- [x] Add news ingestion adapter
+- [x] Add yfinance price ingestion adapter
+- [x] Add dataset builder that joins news and prices by ticker/date
+- [x] Store reproducible sample raw datasets
+- [ ] Add deeper historical news provider support
 
 ## Phase 3: Modeling
 

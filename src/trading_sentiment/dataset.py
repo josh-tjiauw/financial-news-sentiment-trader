@@ -13,6 +13,7 @@ _DATASET_COLUMNS = [
     "title",
     "summary",
     "source",
+    "url",
     "article_count",
     "combined_text",
     "cleaned_text",

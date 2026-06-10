@@ -25,6 +25,7 @@ This repo currently includes:
 - Typed domain models for news articles, price bars, signals, trades, and portfolio state
 - Text-cleaning utilities
 - News CSV ingestion
+- Recent Yahoo Finance news ingestion through `yfinance`
 - Yahoo Finance price ingestion through `yfinance`
 - Dataset builder that joins news and prices by ticker/date
 - Future-return labeling logic
@@ -77,26 +78,45 @@ This creates a processed CSV with:
 - future return
 - movement label: `1`, `0`, or `-1`
 
-### 2. Fetch real historical prices
+### 2. Fetch recent real financial news
+
+```bash
+trading-sentiment fetch-news --tickers AAPL,MSFT,NVDA --max-articles-per-ticker 25 --output data/raw/news.csv
+```
+
+Equivalent module form:
+
+```bash
+py -m trading_sentiment.cli fetch-news --tickers AAPL,MSFT,NVDA --max-articles-per-ticker 25 --output data/raw/news.csv
+```
+
+Note: Yahoo Finance's free news endpoint is recent-news oriented. For deeper historical backtesting, this project will eventually need a historical news provider or archived dataset.
+
+### 3. Fetch real historical prices
 
 ```bash
 trading-sentiment fetch-prices --tickers AAPL,MSFT,NVDA --start 2024-01-01 --end 2024-03-01 --output data/raw/prices.csv
 ```
 
-### 3. Provide real news data
+### 4. Build a real modeling dataset
 
-Create a CSV with these columns:
-
-```csv
-ticker,published_date,title,summary,source
-AAPL,2024-01-02,Apple shares rise after services growth,Analysts noted stronger demand,sample
-```
-
-Then build the dataset:
+After collecting `data/raw/news.csv` and `data/raw/prices.csv`:
 
 ```bash
 trading-sentiment build-dataset --news data/raw/news.csv --prices data/raw/prices.csv --output data/processed/modeling_dataset.csv
 ```
+
+## News CSV format
+
+The dataset builder accepts this normalized news format:
+
+```csv
+ticker,published_date,title,summary,source,url
+AAPL,2024-01-02,Apple shares rise after services growth,Analysts noted stronger demand,sample,https://example.com/article
+```
+
+Required columns: `ticker`, `published_date`, `title`.
+Optional columns: `summary`, `source`, `url`.
 
 ## Example resume bullet
 
