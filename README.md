@@ -118,10 +118,6 @@ AAPL,2024-01-02,Apple shares rise after services growth,Analysts noted stronger 
 Required columns: `ticker`, `published_date`, `title`.
 Optional columns: `summary`, `source`, `url`.
 
-## Example resume bullet
-
-> Built a financial news sentiment analysis platform using Python, NLP, and machine learning to classify market sentiment from news headlines, predict next-day stock movement, and backtest trading strategies against historical price benchmarks.
-
 ## Disclaimer
 
 This is an educational software project, not financial advice or a production trading system.
