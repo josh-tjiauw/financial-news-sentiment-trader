@@ -15,7 +15,11 @@ dependencies = [
   "scikit-learn>=1.4",
   "matplotlib>=3.8",
   "streamlit>=1.36",
+  "yfinance>=0.2.50",
 ]
+
+[project.scripts]
+trading-sentiment = "trading_sentiment.cli:main"
 
 [project.optional-dependencies]
 dev = [
