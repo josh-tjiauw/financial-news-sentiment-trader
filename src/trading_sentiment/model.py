@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
+from sklearn.dummy import DummyClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, f1_score
@@ -88,6 +89,71 @@ def build_baseline_pipeline(max_features: int = 5000) -> Pipeline:
     )
 
 
+def _score_labels(
+    actual_labels: pd.Series,
+    predicted_labels: pd.Series | list[int],
+    labels: list[int],
+) -> dict[str, float]:
+    return {
+        "accuracy": float(accuracy_score(actual_labels, predicted_labels)),
+        "macro_f1": float(
+            f1_score(
+                actual_labels,
+                predicted_labels,
+                labels=labels,
+                average="macro",
+                zero_division=0,
+            )
+        ),
+    }
+
+
+def evaluate_naive_baselines(
+    train: pd.DataFrame,
+    test: pd.DataFrame,
+    labels: list[int],
+) -> dict[str, dict[str, float | int | str]]:
+    """Score simple non-text baselines against the held-out split."""
+    majority_label = int(train["label"].mode().sort_values().iloc[0])
+
+    most_frequent = DummyClassifier(strategy="most_frequent")
+    most_frequent.fit(train[["cleaned_text"]], train["label"])
+
+    stratified = DummyClassifier(strategy="stratified", random_state=42)
+    stratified.fit(train[["cleaned_text"]], train["label"])
+
+    ticker_majority_labels = train.groupby("ticker")["label"].agg(
+        lambda values: int(values.mode().sort_values().iloc[0])
+    )
+    ticker_prior_predictions = (
+        test["ticker"].map(ticker_majority_labels).fillna(majority_label).astype(int)
+    )
+
+    return {
+        "majority_class": {
+            "description": "Always predicts the most common training label.",
+            "predicted_label": majority_label,
+            **_score_labels(
+                test["label"],
+                most_frequent.predict(test[["cleaned_text"]]),
+                labels,
+            ),
+        },
+        "stratified_random": {
+            "description": "Randomly predicts labels using the training label distribution.",
+            **_score_labels(
+                test["label"],
+                stratified.predict(test[["cleaned_text"]]),
+                labels,
+            ),
+        },
+        "ticker_prior": {
+            "description": "Predicts each ticker's most common training label, falling back to the global majority.",
+            **_score_labels(test["label"], ticker_prior_predictions, labels),
+        },
+    }
+
+
 def train_baseline_model(
     dataset: pd.DataFrame,
     test_size: float = 0.25,
@@ -123,7 +189,7 @@ def train_baseline_model(
     if prediction_scores is not None:
         predictions["prediction_confidence"] = prediction_scores
 
-    labels = sorted(dataset["label"].unique().tolist())
+    labels = [int(label) for label in sorted(dataset["label"].unique().tolist())]
     metrics: dict[str, Any] = {
         "model": "tfidf_logistic_regression",
         "row_count": int(len(dataset)),
@@ -131,11 +197,12 @@ def train_baseline_model(
         "test_row_count": int(len(test)),
         "test_size": test_size,
         "max_features": max_features,
-        "labels": [int(label) for label in labels],
+        "labels": labels,
         "accuracy": float(accuracy_score(test["label"], predicted_labels)),
         "macro_f1": float(
             f1_score(test["label"], predicted_labels, labels=labels, average="macro", zero_division=0)
         ),
+        "naive_baselines": evaluate_naive_baselines(train, test, labels),
         "classification_report": classification_report(
             test["label"],
             predicted_labels,

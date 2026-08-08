@@ -22,8 +22,8 @@
 
 - [x] Add TF-IDF + logistic regression baseline
 - [x] Add model evaluation report
+- [x] Compare model performance against naive baselines
 - [ ] Add FinBERT sentiment scoring experiment
-- [ ] Compare model performance against naive baselines
 
 ## Phase 4: Backtesting
 

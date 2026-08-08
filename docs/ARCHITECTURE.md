@@ -92,7 +92,7 @@ flowchart TD
 - `trading_sentiment.dataset` joins daily news with same-day prices and future close prices.
 - `trading_sentiment.labeling` creates the target label from future returns, not same-day movement.
 - `trading_sentiment.text` cleans article text for NLP features.
-- `trading_sentiment.model` trains the baseline `TF-IDF -> LogisticRegression` classifier and writes evaluation artifacts.
+- `trading_sentiment.model` trains the baseline `TF-IDF -> LogisticRegression` classifier and writes evaluation artifacts with naive majority-class, stratified-random, and ticker-prior comparisons.
 - `trading_sentiment.backtest` converts predicted labels into simple per-ticker long/cash strategy tests with fixed transaction costs and slippage, then reports return, drawdown, exposure, volatility, Sharpe-like risk, trade logs, and equity curves.
 - `trading_sentiment.app` provides a simple Streamlit dashboard for inspecting datasets, predictions, and backtest outputs.
 
@@ -103,7 +103,7 @@ flowchart TD
 3. Build `data/processed/modeling_dataset.csv` by aligning ticker/date rows.
 4. Clean and combine article text into `cleaned_text`.
 5. Label each row using future price movement: `1` up, `0` neutral, `-1` down.
-6. Train the baseline model using a chronological train/test split.
+6. Train the baseline model using a chronological train/test split and compare it against naive reference models.
 7. Write metrics and held-out predictions under `reports/`.
 8. Convert predicted labels into buy/hold/sell signals and backtest them per ticker with optional transaction costs and slippage.
 9. Inspect datasets, predictions, and strategy results in the Streamlit dashboard.

@@ -162,7 +162,8 @@ This trains an explainable baseline:
 - TF-IDF text features from `cleaned_text`
 - Logistic regression classifier
 - Chronological train/test split to better mimic future prediction
-- JSON metrics and held-out prediction CSV artifacts
+- JSON metrics with naive comparisons: majority class, stratified random, and ticker prior
+- Held-out prediction CSV artifacts
 
 ### 8. Backtest baseline predictions
 
