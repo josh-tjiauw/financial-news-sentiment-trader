@@ -38,5 +38,6 @@
 ## Phase 5: Demo
 
 - [x] Build initial Streamlit dashboard
-- [ ] Add screenshots/GIF to README
+- [x] Add screenshots/GIF to README
+- [x] Add deployment configuration
 - [ ] Deploy demo if practical

@@ -10,6 +10,8 @@ Use financial news headlines/summaries to estimate market sentiment, convert tha
 
 ![Financial News Sentiment Trader dashboard](docs/images/dashboard-demo.png)
 
+The app defaults to the committed multi-ticker demo artifacts, so it can be opened locally or deployed without first running the data pipeline.
+
 ## Planned pipeline
 
 1. Collect financial news by ticker/date.
@@ -123,7 +125,7 @@ Note: Yahoo Finance's free news endpoint is recent-news oriented. For deeper his
 
 ### 4. Import historical news from a CSV dataset
 
-For large Kaggle/manual/vendor datasets, stream and normalize a filtered subset into this project’s news schema:
+For large Kaggle/manual/vendor datasets, stream and normalize a filtered subset into this project's news schema:
 
 ```bash
 py -m trading_sentiment.cli prepare-historical-news --input downloads/historical_news.csv --output data/raw/news.csv --ticker-column ticker --date-column date --title-column title --summary-column summary --source-name kaggle --tickers AAPL,MSFT,NVDA --max-rows 50000
@@ -195,9 +197,9 @@ py -m trading_sentiment.cli backtest-predictions --predictions reports/baseline_
 
 This converts predicted labels into a simple long/cash strategy per ticker:
 
-- `1` → buy / stay long
-- `0` → hold current position
-- `-1` → sell / stay cash
+- `1` -> buy / stay long
+- `0` -> hold current position
+- `-1` -> sell / stay cash
 
 Use `--transaction-cost` for fixed per-trade fees and `--slippage-pct` for price impact as a decimal, such as `0.001` for 0.1% worse execution on buys and sells.
 
@@ -209,13 +211,23 @@ The summary report includes strategy return, buy-and-hold return, excess return,
 py -m streamlit run src/trading_sentiment/app.py
 ```
 
-The dashboard shows model-vs-naive metrics, ticker filters, the processed dataset, baseline predictions, strategy summary, equity curve, and trade log.
-
-To inspect the committed demo artifacts in the dashboard, set the sidebar paths to:
+The dashboard shows model-vs-naive metrics, ticker filters, the processed dataset, baseline predictions, strategy summary, equity curve, and trade log. By default, it opens the committed demo artifacts:
 
 - Modeling dataset CSV: `data/processed/demo_modeling_dataset.csv`
 - Predictions CSV: `reports/demo_baseline_predictions.csv`
 - Metrics JSON: `reports/demo_baseline_metrics.json`
+
+## Deployment
+
+The repo is ready for Streamlit Community Cloud deployment.
+
+Use these settings:
+
+- Repository: `josh-tjiauw/financial-news-sentiment-trader`
+- Branch: `master`
+- Main file path: `src/trading_sentiment/app.py`
+
+Streamlit will install the package through `requirements.txt`, which points to this project with `-e .`.
 
 ## Architecture diagram
 

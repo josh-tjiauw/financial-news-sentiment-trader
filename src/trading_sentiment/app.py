@@ -18,9 +18,9 @@ from trading_sentiment.dashboard import (
 st.set_page_config(page_title="Financial News Sentiment Trader", layout="wide")
 
 PROJECT_ROOT = Path.cwd()
-DEFAULT_DATASET = PROJECT_ROOT / "data" / "processed" / "modeling_dataset.csv"
-DEFAULT_PREDICTIONS = PROJECT_ROOT / "reports" / "baseline_predictions.csv"
-DEFAULT_METRICS = PROJECT_ROOT / "reports" / "baseline_metrics.json"
+DEFAULT_DATASET = PROJECT_ROOT / "data" / "processed" / "demo_modeling_dataset.csv"
+DEFAULT_PREDICTIONS = PROJECT_ROOT / "reports" / "demo_baseline_predictions.csv"
+DEFAULT_METRICS = PROJECT_ROOT / "reports" / "demo_baseline_metrics.json"
 
 
 @st.cache_data
