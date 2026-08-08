@@ -1,0 +1,59 @@
+{
+  "model": "tfidf_logistic_regression",
+  "row_count": 35,
+  "train_row_count": 26,
+  "test_row_count": 9,
+  "test_size": 0.25,
+  "max_features": 5000,
+  "labels": [
+    -1,
+    1
+  ],
+  "accuracy": 1.0,
+  "macro_f1": 1.0,
+  "naive_baselines": {
+    "majority_class": {
+      "description": "Always predicts the most common training label.",
+      "predicted_label": 1,
+      "accuracy": 0.6666666666666666,
+      "macro_f1": 0.4
+    },
+    "stratified_random": {
+      "description": "Randomly predicts labels using the training label distribution.",
+      "accuracy": 0.5555555555555556,
+      "macro_f1": 0.5
+    },
+    "ticker_prior": {
+      "description": "Predicts each ticker's most common training label, falling back to the global majority.",
+      "accuracy": 0.5555555555555556,
+      "macro_f1": 0.5
+    }
+  },
+  "classification_report": {
+    "-1": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 3.0
+    },
+    "1": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 6.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 9.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 9.0
+    }
+  }
+}

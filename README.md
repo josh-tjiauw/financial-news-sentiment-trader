@@ -6,6 +6,10 @@ AI stocks class project: a Python machine learning pipeline that analyzes financ
 
 Use financial news headlines/summaries to estimate market sentiment, convert that signal into trading decisions, and evaluate whether the strategy performs better than simple benchmarks.
 
+## Dashboard preview
+
+![Financial News Sentiment Trader dashboard](docs/images/dashboard-demo.png)
+
 ## Planned pipeline
 
 1. Collect financial news by ticker/date.
@@ -92,6 +96,16 @@ This creates a processed CSV with:
 - future close price
 - future return
 - movement label: `1`, `0`, or `-1`
+
+For a richer local dashboard demo, use the committed multi-ticker demo files:
+
+```bash
+py -m trading_sentiment.cli build-dataset --news data/raw/demo_news.csv --prices data/raw/demo_prices.csv --output data/processed/demo_modeling_dataset.csv
+py -m trading_sentiment.cli train-baseline --dataset data/processed/demo_modeling_dataset.csv --metrics-output reports/demo_baseline_metrics.json --predictions-output reports/demo_baseline_predictions.csv
+py -m trading_sentiment.cli backtest-predictions --predictions reports/demo_baseline_predictions.csv --summary-output reports/demo_backtest_summary.csv --trades-output reports/demo_backtest_trades.csv --equity-output reports/demo_backtest_equity_curve.csv --transaction-cost 1.00 --slippage-pct 0.001
+```
+
+See [`reports/SAMPLE_RESULTS.md`](reports/SAMPLE_RESULTS.md) for the committed demo metrics and backtest summary.
 
 ### 3. Fetch recent real financial news
 
@@ -196,6 +210,12 @@ py -m streamlit run src/trading_sentiment/app.py
 ```
 
 The dashboard shows model-vs-naive metrics, ticker filters, the processed dataset, baseline predictions, strategy summary, equity curve, and trade log.
+
+To inspect the committed demo artifacts in the dashboard, set the sidebar paths to:
+
+- Modeling dataset CSV: `data/processed/demo_modeling_dataset.csv`
+- Predictions CSV: `reports/demo_baseline_predictions.csv`
+- Metrics JSON: `reports/demo_baseline_metrics.json`
 
 ## Architecture diagram
 
