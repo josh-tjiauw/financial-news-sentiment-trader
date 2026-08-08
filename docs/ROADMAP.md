@@ -15,23 +15,28 @@
 - [x] Add yfinance price ingestion adapter
 - [x] Add dataset builder that joins news and prices by ticker/date
 - [x] Store reproducible sample raw datasets
-- [ ] Add deeper historical news provider support
+- [x] Add flexible historical news CSV importer
+- [ ] Add deeper historical news provider API support
 
 ## Phase 3: Modeling
 
-- [ ] Add TF-IDF + logistic regression baseline
-- [ ] Add model evaluation report
+- [x] Add TF-IDF + logistic regression baseline
+- [x] Add model evaluation report
 - [ ] Add FinBERT sentiment scoring experiment
 - [ ] Compare model performance against naive baselines
 
 ## Phase 4: Backtesting
 
-- [ ] Add benchmark comparison against SPY/QQQ/buy-and-hold
-- [ ] Add transaction costs and slippage
-- [ ] Add strategy metrics: total return, max drawdown, Sharpe-like risk metric, win rate
+- [x] Backtest baseline predictions as simple per-ticker long/cash strategies
+- [x] Add basic buy-and-hold comparison per ticker
+- [x] Add configurable transaction costs
+- [x] Add equity curve output
+- [x] Add strategy metrics: max drawdown, Sharpe-like risk metric, daily win rate, exposure
+- [x] Add completed-trade win/loss metrics
+- [ ] Add slippage
 
 ## Phase 5: Demo
 
-- [ ] Build Streamlit dashboard
+- [x] Build initial Streamlit dashboard
 - [ ] Add screenshots/GIF to README
 - [ ] Deploy demo if practical

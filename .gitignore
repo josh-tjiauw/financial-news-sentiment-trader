@@ -9,11 +9,19 @@ __pycache__/
 *.egg-info/
 .env
 .DS_Store
+.tmp/
+
+# Local downloaded datasets and generated model evaluation artifacts.
+downloads/
+reports/*
+!reports/.gitkeep
 
 # Keep directory placeholders and small samples, but avoid committing large datasets by default.
 data/raw/*
 data/processed/*
+data/app/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
+!data/app/.gitkeep
 !data/raw/sample_news.csv
 !data/raw/sample_prices.csv
