@@ -33,7 +33,7 @@
 - [x] Add equity curve output
 - [x] Add strategy metrics: max drawdown, Sharpe-like risk metric, daily win rate, exposure
 - [x] Add completed-trade win/loss metrics
-- [ ] Add slippage
+- [x] Add slippage
 
 ## Phase 5: Demo
 

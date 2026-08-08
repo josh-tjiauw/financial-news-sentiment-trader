@@ -139,6 +139,7 @@ def backtest_predictions_command(args: argparse.Namespace) -> None:
         equity_output=args.equity_output,
         initial_cash=args.initial_cash,
         transaction_cost=args.transaction_cost,
+        slippage_pct=args.slippage_pct,
     )
     print(f"Backtested {len(summary)} ticker strategies")
     print(f"Saved summary to {args.summary_output}")
@@ -422,6 +423,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     backtest_predictions.add_argument("--initial-cash", default=100_000.0, type=float)
     backtest_predictions.add_argument("--transaction-cost", default=0.0, type=float)
+    backtest_predictions.add_argument(
+        "--slippage-pct",
+        default=0.0,
+        type=float,
+        help="Per-trade slippage percentage as a decimal, e.g. 0.001 for 0.1%%",
+    )
     backtest_predictions.set_defaults(func=backtest_predictions_command)
 
     init_db = subparsers.add_parser(

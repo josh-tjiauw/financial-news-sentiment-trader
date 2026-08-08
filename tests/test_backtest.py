@@ -30,6 +30,31 @@ def test_apply_sell_signal_liquidates_position():
     assert portfolio.ticker is None
 
 
+def test_apply_signal_applies_slippage_to_execution_price():
+    portfolio = Portfolio(cash=1000)
+    apply_signal(
+        portfolio,
+        Signal.BUY,
+        "QQQ",
+        100,
+        date(2024, 1, 1),
+        slippage_pct=0.01,
+    )
+    assert portfolio.trades[0].price == pytest.approx(101)
+    assert portfolio.shares == pytest.approx(1000 / 101)
+
+    apply_signal(
+        portfolio,
+        Signal.SELL,
+        "QQQ",
+        110,
+        date(2024, 1, 2),
+        slippage_pct=0.01,
+    )
+    assert portfolio.trades[1].price == pytest.approx(108.9)
+    assert portfolio.cash == pytest.approx((1000 / 101) * 108.9)
+
+
 def test_prediction_label_to_signal():
     assert prediction_label_to_signal(1) is Signal.BUY
     assert prediction_label_to_signal(0) is Signal.HOLD
@@ -97,6 +122,15 @@ def test_calculate_completed_trade_metrics_includes_transaction_costs():
     assert metrics["completed_trade_count"] == 1
     assert metrics["winning_trade_count"] == 1
     assert metrics["total_completed_trade_pnl"] == pytest.approx(89.5)
+
+
+def test_backtest_predictions_rejects_negative_slippage():
+    predictions = pd.DataFrame(
+        [{"ticker": "AAPL", "date": "2024-01-02", "close": 100, "predicted_label": 1}]
+    )
+
+    with pytest.raises(ValueError, match="slippage"):
+        backtest_predictions(predictions, slippage_pct=-0.01)
 
 
 def test_backtest_predictions_requires_close_prices():

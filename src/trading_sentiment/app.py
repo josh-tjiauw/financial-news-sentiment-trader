@@ -30,6 +30,12 @@ with st.sidebar:
     predictions_path = st.text_input("Predictions CSV", str(DEFAULT_PREDICTIONS))
     initial_cash = st.number_input("Initial cash per ticker", min_value=1000.0, value=100_000.0)
     transaction_cost = st.number_input("Transaction cost per trade", min_value=0.0, value=0.0)
+    slippage_pct = st.number_input(
+        "Slippage per trade",
+        min_value=0.0,
+        value=0.0,
+        format="%.4f",
+    )
 
 st.header("Pipeline")
 st.code(
@@ -69,6 +75,7 @@ if predictions is not None:
             predictions,
             initial_cash=initial_cash,
             transaction_cost=transaction_cost,
+            slippage_pct=slippage_pct,
         )
         st.subheader("Strategy summary")
         st.dataframe(summary, use_container_width=True)

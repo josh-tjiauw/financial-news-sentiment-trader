@@ -30,6 +30,7 @@ def apply_signal(
     price: float,
     trade_date: date,
     transaction_cost: float = 0.0,
+    slippage_pct: float = 0.0,
 ) -> Portfolio:
     """Apply a simple long/cash signal to a portfolio.
 
@@ -39,14 +40,22 @@ def apply_signal(
         raise ValueError("price must be greater than zero")
     if transaction_cost < 0:
         raise ValueError("transaction_cost cannot be negative")
+    if slippage_pct < 0:
+        raise ValueError("slippage_pct cannot be negative")
+
+    execution_price = price
+    if signal is Signal.BUY:
+        execution_price = price * (1 + slippage_pct)
+    elif signal is Signal.SELL:
+        execution_price = price * (1 - slippage_pct)
 
     if signal is Signal.BUY and portfolio.cash > transaction_cost and portfolio.shares == 0:
         investable_cash = portfolio.cash - transaction_cost
-        portfolio.shares = investable_cash / price
+        portfolio.shares = investable_cash / execution_price
         portfolio.cash = 0.0
         portfolio.ticker = ticker
     elif signal is Signal.SELL and portfolio.shares > 0:
-        portfolio.cash = (portfolio.shares * price) - transaction_cost
+        portfolio.cash = (portfolio.shares * execution_price) - transaction_cost
         portfolio.shares = 0.0
         portfolio.ticker = None
     else:
@@ -57,7 +66,7 @@ def apply_signal(
             date=trade_date,
             ticker=ticker,
             signal=signal,
-            price=price,
+            price=execution_price,
             shares=portfolio.shares,
             cash_after=portfolio.cash,
             equity_after=portfolio.equity(price if portfolio.shares else None),
@@ -139,6 +148,7 @@ def backtest_predictions(
     predictions: pd.DataFrame,
     initial_cash: float = 100_000.0,
     transaction_cost: float = 0.0,
+    slippage_pct: float = 0.0,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Backtest predicted labels as independent long/cash strategies per ticker.
 
@@ -152,6 +162,10 @@ def backtest_predictions(
         raise ValueError(f"predictions are missing required columns: {missing}")
     if initial_cash <= 0:
         raise ValueError("initial_cash must be greater than zero")
+    if transaction_cost < 0:
+        raise ValueError("transaction_cost cannot be negative")
+    if slippage_pct < 0:
+        raise ValueError("slippage_pct cannot be negative")
 
     rows = predictions.copy()
     rows["date"] = pd.to_datetime(rows["date"])
@@ -177,6 +191,7 @@ def backtest_predictions(
                 price=close_price,
                 trade_date=row["date"].date(),
                 transaction_cost=transaction_cost,
+                slippage_pct=slippage_pct,
             )
             equity = portfolio.equity(close_price)
             buy_hold_equity = initial_cash * (close_price / first_close)
@@ -275,6 +290,7 @@ def backtest_predictions_from_csv(
     equity_output: str | Path | None = None,
     initial_cash: float = 100_000.0,
     transaction_cost: float = 0.0,
+    slippage_pct: float = 0.0,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Load prediction CSV artifacts, backtest them, and write report CSVs."""
     predictions = pd.read_csv(predictions_csv)
@@ -282,6 +298,7 @@ def backtest_predictions_from_csv(
         predictions,
         initial_cash=initial_cash,
         transaction_cost=transaction_cost,
+        slippage_pct=slippage_pct,
     )
 
     summary_path = Path(summary_output)

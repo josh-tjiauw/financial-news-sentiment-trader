@@ -167,13 +167,13 @@ This trains an explainable baseline:
 ### 8. Backtest baseline predictions
 
 ```bash
-trading-sentiment backtest-predictions --predictions reports/baseline_predictions.csv --summary-output reports/backtest_summary.csv --trades-output reports/backtest_trades.csv --equity-output reports/backtest_equity_curve.csv
+trading-sentiment backtest-predictions --predictions reports/baseline_predictions.csv --summary-output reports/backtest_summary.csv --trades-output reports/backtest_trades.csv --equity-output reports/backtest_equity_curve.csv --transaction-cost 1.00 --slippage-pct 0.001
 ```
 
 Equivalent module form:
 
 ```bash
-py -m trading_sentiment.cli backtest-predictions --predictions reports/baseline_predictions.csv --summary-output reports/backtest_summary.csv --trades-output reports/backtest_trades.csv --equity-output reports/backtest_equity_curve.csv
+py -m trading_sentiment.cli backtest-predictions --predictions reports/baseline_predictions.csv --summary-output reports/backtest_summary.csv --trades-output reports/backtest_trades.csv --equity-output reports/backtest_equity_curve.csv --transaction-cost 1.00 --slippage-pct 0.001
 ```
 
 This converts predicted labels into a simple long/cash strategy per ticker:
@@ -181,6 +181,8 @@ This converts predicted labels into a simple long/cash strategy per ticker:
 - `1` → buy / stay long
 - `0` → hold current position
 - `-1` → sell / stay cash
+
+Use `--transaction-cost` for fixed per-trade fees and `--slippage-pct` for price impact as a decimal, such as `0.001` for 0.1% worse execution on buys and sells.
 
 The summary report includes strategy return, buy-and-hold return, excess return, trade count, completed-trade win/loss metrics, exposure, daily win rate, max drawdown, volatility, and a Sharpe-like risk metric. The trade report annotates realized P/L on sell rows, and the equity curve report supports charting strategy value over time.
 

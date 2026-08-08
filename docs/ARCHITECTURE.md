@@ -93,7 +93,7 @@ flowchart TD
 - `trading_sentiment.labeling` creates the target label from future returns, not same-day movement.
 - `trading_sentiment.text` cleans article text for NLP features.
 - `trading_sentiment.model` trains the baseline `TF-IDF -> LogisticRegression` classifier and writes evaluation artifacts.
-- `trading_sentiment.backtest` converts predicted labels into simple per-ticker long/cash strategy tests and reports return, drawdown, exposure, volatility, Sharpe-like risk, trade logs, and equity curves.
+- `trading_sentiment.backtest` converts predicted labels into simple per-ticker long/cash strategy tests with fixed transaction costs and slippage, then reports return, drawdown, exposure, volatility, Sharpe-like risk, trade logs, and equity curves.
 - `trading_sentiment.app` provides a simple Streamlit dashboard for inspecting datasets, predictions, and backtest outputs.
 
 ## Data flow
@@ -105,7 +105,7 @@ flowchart TD
 5. Label each row using future price movement: `1` up, `0` neutral, `-1` down.
 6. Train the baseline model using a chronological train/test split.
 7. Write metrics and held-out predictions under `reports/`.
-8. Convert predicted labels into buy/hold/sell signals and backtest them per ticker.
+8. Convert predicted labels into buy/hold/sell signals and backtest them per ticker with optional transaction costs and slippage.
 9. Inspect datasets, predictions, and strategy results in the Streamlit dashboard.
 
 ## Design principles
