@@ -94,7 +94,8 @@ flowchart TD
 - `trading_sentiment.text` cleans article text for NLP features.
 - `trading_sentiment.model` trains the baseline `TF-IDF -> LogisticRegression` classifier and writes evaluation artifacts with naive majority-class, stratified-random, and ticker-prior comparisons.
 - `trading_sentiment.backtest` converts predicted labels into simple per-ticker long/cash strategy tests with fixed transaction costs and slippage, then reports return, drawdown, exposure, volatility, Sharpe-like risk, trade logs, and equity curves.
-- `trading_sentiment.app` provides a simple Streamlit dashboard for inspecting datasets, predictions, and backtest outputs.
+- `trading_sentiment.dashboard` contains reusable helpers for filtering ticker data and shaping metric comparisons for the app.
+- `trading_sentiment.app` provides a simple Streamlit dashboard for inspecting model comparisons, datasets, predictions, and backtest outputs.
 
 ## Data flow
 

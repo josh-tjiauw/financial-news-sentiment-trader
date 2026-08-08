@@ -71,6 +71,8 @@ This creates or updates `data/app/trading_sentiment.sqlite` from `database/schem
 
 ### 2. Build a modeling dataset from the included sample files
 
+The included sample files are intentionally small, so the dashboard will only show a couple of tickers until you import larger news and price datasets.
+
 ```bash
 trading-sentiment build-dataset --news data/raw/sample_news.csv --prices data/raw/sample_prices.csv --output data/processed/sample_modeling_dataset.csv
 ```
@@ -193,7 +195,7 @@ The summary report includes strategy return, buy-and-hold return, excess return,
 py -m streamlit run src/trading_sentiment/app.py
 ```
 
-The dashboard shows the processed dataset, baseline predictions, strategy summary, equity curve, and trade log.
+The dashboard shows model-vs-naive metrics, ticker filters, the processed dataset, baseline predictions, strategy summary, equity curve, and trade log.
 
 ## Architecture diagram
 
