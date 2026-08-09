@@ -8,19 +8,19 @@ decisions.
 ## Demo Data
 
 - Tickers: AAPL, AMZN, GOOGL, META, MSFT, NVDA, TSLA
-- Modeling rows: 35
-- Train rows: 26
-- Test rows: 9
+- Modeling rows: 91
+- Train rows: 68
+- Test rows: 23
 - Label classes: `-1`, `1`
 
 ## Model Comparison
 
 | Model | Accuracy | Macro F1 |
 | --- | ---: | ---: |
-| TF-IDF + logistic regression | 0.556 | 0.500 |
+| TF-IDF + logistic regression | 0.696 | 0.654 |
 | Majority class | 0.667 | 0.400 |
-| Stratified random | 0.556 | 0.500 |
-| Ticker prior | 0.556 | 0.500 |
+| Stratified random | 0.435 | 0.303 |
+| Ticker prior | 0.696 | 0.410 |
 
 ## Backtest Summary
 
@@ -32,13 +32,13 @@ Backtest assumptions:
 
 | Ticker | Strategy Return | Buy/Hold Return | Trade Count |
 | --- | ---: | ---: | ---: |
-| AAPL | -0.10% | 0.00% | 1 |
-| AMZN | 0.00% | 0.00% | 0 |
-| GOOGL | 0.00% | 0.00% | 0 |
-| META | 0.00% | 0.00% | 0 |
-| MSFT | -0.10% | 0.00% | 1 |
-| NVDA | 6.14% | 6.25% | 1 |
-| TSLA | 1.82% | 1.92% | 1 |
+| AAPL | 1.61% | 4.67% | 2 |
+| AMZN | -0.92% | 1.23% | 3 |
+| GOOGL | 2.58% | 2.68% | 1 |
+| META | 1.88% | 1.98% | 1 |
+| MSFT | 0.64% | 0.47% | 3 |
+| NVDA | 5.58% | 4.35% | 2 |
+| TSLA | 1.75% | 1.38% | 1 |
 
 ## Reproduce
 

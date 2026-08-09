@@ -12,7 +12,7 @@ Live demo: https://financial-news-sentiment-trader.streamlit.app/
 
 ![Financial News Sentiment Trader dashboard](docs/images/dashboard-demo.png)
 
-The app defaults to the committed multi-ticker demo artifacts, so it can be opened locally or deployed without first running the data pipeline. The demo data is intentionally small and includes mixed-signal headlines, so the displayed metrics are illustrative rather than evidence of real trading performance.
+The app defaults to the committed multi-ticker demo artifacts, so it can be opened locally or deployed without first running the data pipeline. The demo data is intentionally compact and includes mixed-signal headlines, so the displayed metrics are illustrative rather than evidence of real trading performance.
 
 ## Walkthrough
 
@@ -36,7 +36,7 @@ Key technical decisions:
 
 Known limitations:
 
-- The committed demo dataset is intentionally small, educational, and partially ambiguous.
+- The committed demo dataset is intentionally compact, educational, and partially ambiguous.
 - Yahoo Finance news is recent-news oriented, so serious historical backtesting needs a deeper news archive.
 - The baseline model is intentionally simple; FinBERT or another finance-specific model is a planned improvement.
 - This is an educational research tool, not financial advice or a production trading system.

@@ -1,36 +1,92 @@
 ticker,published_date,title,summary,source
-AAPL,2024-01-02,Apple services demand lifts outlook,Analysts cited resilient App Store and subscription revenue as a positive catalyst.,demo
-AAPL,2024-01-03,Apple hardware demand weakens,Investors reacted to softer iPhone channel checks and cautious supplier commentary.,demo
-AAPL,2024-01-04,Apple AI update boosts sentiment,New device AI features improved expectations for the next upgrade cycle.,demo
-AAPL,2024-01-05,Apple buybacks support shares,Management commentary pointed to strong cash flow and shareholder returns.,demo
-AAPL,2024-01-08,Apple AI momentum continues,Analysts highlighted improving device demand even as shares faded into the close.,demo
-MSFT,2024-01-02,Microsoft cloud demand remains strong,Enterprise Azure demand and AI workloads supported a positive revenue outlook.,demo
-MSFT,2024-01-03,Microsoft AI products expand,New enterprise copilots increased optimism around software monetization.,demo
-MSFT,2024-01-04,Microsoft faces cautious guidance,Management noted slower customer optimization trends in some cloud segments.,demo
-MSFT,2024-01-05,Microsoft security growth accelerates,Security and productivity software demand improved investor sentiment.,demo
-MSFT,2024-01-08,Microsoft raises cloud forecast,Analysts lifted estimates after signs of durable AI infrastructure spending.,demo
-NVDA,2024-01-02,Nvidia AI chip demand surges,Data center customers continued ordering high-end accelerators faster than supply.,demo
-NVDA,2024-01-03,Nvidia backlog expands again,Channel checks showed strong demand from cloud and enterprise AI buyers.,demo
-NVDA,2024-01-04,Nvidia export limits pressure shares,Investors weighed new restrictions that could slow international chip sales.,demo
-NVDA,2024-01-05,Nvidia data center sales impress,Revenue expectations improved after another round of bullish analyst checks.,demo
-NVDA,2024-01-08,Nvidia guidance beats expectations,Management commentary suggested AI infrastructure demand remains broad based.,demo
-GOOGL,2024-01-02,Alphabet ad demand softens,Advertisers remained cautious and search growth expectations moved lower.,demo
-GOOGL,2024-01-03,Alphabet cloud margins improve,Cost discipline and better cloud profitability supported a stronger outlook.,demo
-GOOGL,2024-01-04,Alphabet AI search tools gain traction,New AI features increased confidence in long-term search engagement.,demo
-GOOGL,2024-01-05,Alphabet regulatory pressure weighs,Investors focused on legal risk and possible limits on ad targeting.,demo
-GOOGL,2024-01-08,Alphabet regulatory pressure persists,Legal uncertainty weighed on sentiment even as ad demand stabilized.,demo
-AMZN,2024-01-02,Amazon retail margins improve,Fulfillment efficiency and advertising growth lifted sentiment on profitability.,demo
-AMZN,2024-01-03,Amazon consumer spending concerns rise,Investors worried that discretionary demand could weaken near-term retail sales.,demo
-AMZN,2024-01-04,Amazon cloud demand rebounds,AWS pipeline checks improved after several quarters of customer optimization.,demo
-AMZN,2024-01-05,Amazon ad business grows quickly,Higher-margin advertising revenue supported stronger operating income expectations.,demo
-AMZN,2024-01-08,Amazon valuation pressure emerges,Analysts warned that expectations may be too high after the recent rally.,demo
-META,2024-01-02,Meta ad engagement strengthens,Reels monetization and better targeting improved revenue expectations.,demo
-META,2024-01-03,Meta spending concerns weigh,Investors questioned whether AI and metaverse expenses could pressure margins.,demo
-META,2024-01-04,Meta cost discipline supports margins,Management continued emphasizing efficiency and expense controls.,demo
-META,2024-01-05,Meta AI tools lift advertiser demand,New campaign tools helped advertisers improve conversion performance.,demo
-META,2024-01-08,Meta spending concerns return,Investors questioned AI infrastructure costs despite stronger engagement trends.,demo
-TSLA,2024-01-02,Tesla deliveries miss expectations,Investors reacted to softer delivery numbers and rising competition.,demo
-TSLA,2024-01-03,Tesla pricing strategy improves demand,Lower prices helped order rates recover in key markets.,demo
-TSLA,2024-01-04,Tesla margin pressure persists,Analysts warned that discounting could continue weighing on automotive gross margin.,demo
-TSLA,2024-01-05,Tesla energy storage growth accelerates,Storage deployments and software potential improved sentiment.,demo
-TSLA,2024-01-08,Tesla order rates improve,Lower prices helped demand recover even as the stock finished weaker.,demo
+AAPL,2024-01-02,Apple outlook mixed as AI optimism meets valuation concern,Positive product commentary was offset by cautious hardware and valuation checks.,demo
+AAPL,2024-01-03,Apple valuation and hardware concerns weigh,Investors reacted to cautious supplier checks and limited near-term upside.,demo
+AAPL,2024-01-04,Apple services and AI demand improve,Analysts cited resilient demand and stronger upgrade-cycle expectations.,demo
+AAPL,2024-01-05,Apple valuation and hardware concerns weigh,Investors reacted to cautious supplier checks and limited near-term upside.,demo
+AAPL,2024-01-08,Apple services and AI demand improve,Analysts cited resilient demand and stronger upgrade-cycle expectations.,demo
+AAPL,2024-01-09,Apple valuation and hardware concerns weigh,Investors reacted to cautious supplier checks and limited near-term upside.,demo
+AAPL,2024-01-10,Apple valuation and hardware concerns weigh,Investors reacted to cautious supplier checks and limited near-term upside.,demo
+AAPL,2024-01-11,Apple outlook mixed as AI optimism meets valuation concern,Positive product commentary was offset by cautious hardware and valuation checks.,demo
+AAPL,2024-01-12,Apple services and AI demand improve,Analysts cited resilient demand and stronger upgrade-cycle expectations.,demo
+AAPL,2024-01-16,Apple valuation and hardware concerns weigh,Investors reacted to cautious supplier checks and limited near-term upside.,demo
+AAPL,2024-01-17,Apple valuation and hardware concerns weigh,Investors reacted to cautious supplier checks and limited near-term upside.,demo
+AAPL,2024-01-18,Apple services and AI demand improve,Analysts cited resilient demand and stronger upgrade-cycle expectations.,demo
+AAPL,2024-01-19,Apple valuation and hardware concerns weigh,Investors reacted to cautious supplier checks and limited near-term upside.,demo
+MSFT,2024-01-02,Microsoft cloud and AI demand strengthens,Enterprise cloud checks pointed to durable spending and improving software momentum.,demo
+MSFT,2024-01-03,Microsoft cloud and AI demand strengthens,Enterprise cloud checks pointed to durable spending and improving software momentum.,demo
+MSFT,2024-01-04,Microsoft guidance caution pressures shares,Some customers continued optimizing cloud spend and slowing expansion.,demo
+MSFT,2024-01-05,Microsoft cloud and AI demand strengthens,Enterprise cloud checks pointed to durable spending and improving software momentum.,demo
+MSFT,2024-01-08,Microsoft guidance caution pressures shares,Some customers continued optimizing cloud spend and slowing expansion.,demo
+MSFT,2024-01-09,Microsoft guidance caution pressures shares,Some customers continued optimizing cloud spend and slowing expansion.,demo
+MSFT,2024-01-10,Microsoft AI optimism balanced by cloud optimization,AI demand improved while some customers remained careful with cloud budgets.,demo
+MSFT,2024-01-11,Microsoft cloud and AI demand strengthens,Enterprise cloud checks pointed to durable spending and improving software momentum.,demo
+MSFT,2024-01-12,Microsoft guidance caution pressures shares,Some customers continued optimizing cloud spend and slowing expansion.,demo
+MSFT,2024-01-16,Microsoft guidance caution pressures shares,Some customers continued optimizing cloud spend and slowing expansion.,demo
+MSFT,2024-01-17,Microsoft cloud and AI demand strengthens,Enterprise cloud checks pointed to durable spending and improving software momentum.,demo
+MSFT,2024-01-18,Microsoft guidance caution pressures shares,Some customers continued optimizing cloud spend and slowing expansion.,demo
+MSFT,2024-01-19,Microsoft cloud and AI demand strengthens,Enterprise cloud checks pointed to durable spending and improving software momentum.,demo
+NVDA,2024-01-02,Nvidia data center demand expands,AI accelerator demand remained strong across cloud and enterprise customers.,demo
+NVDA,2024-01-03,Nvidia data center demand expands,AI accelerator demand remained strong across cloud and enterprise customers.,demo
+NVDA,2024-01-04,Nvidia export limits pressure sentiment,Investors weighed regulatory limits and supply-chain uncertainty.,demo
+NVDA,2024-01-05,Nvidia export limits pressure sentiment,Investors weighed regulatory limits and supply-chain uncertainty.,demo
+NVDA,2024-01-08,Nvidia data center demand expands,AI accelerator demand remained strong across cloud and enterprise customers.,demo
+NVDA,2024-01-09,Nvidia demand strong but export risk lingers,Data center demand stayed healthy while investors watched regulatory pressure.,demo
+NVDA,2024-01-10,Nvidia data center demand expands,AI accelerator demand remained strong across cloud and enterprise customers.,demo
+NVDA,2024-01-11,Nvidia data center demand expands,AI accelerator demand remained strong across cloud and enterprise customers.,demo
+NVDA,2024-01-12,Nvidia data center demand expands,AI accelerator demand remained strong across cloud and enterprise customers.,demo
+NVDA,2024-01-16,Nvidia data center demand expands,AI accelerator demand remained strong across cloud and enterprise customers.,demo
+NVDA,2024-01-17,Nvidia data center demand expands,AI accelerator demand remained strong across cloud and enterprise customers.,demo
+NVDA,2024-01-18,Nvidia export limits pressure sentiment,Investors weighed regulatory limits and supply-chain uncertainty.,demo
+NVDA,2024-01-19,Nvidia demand strong but export risk lingers,Data center demand stayed healthy while investors watched regulatory pressure.,demo
+GOOGL,2024-01-02,Alphabet regulatory and ad risks persist,Legal uncertainty and cautious advertiser budgets weighed on expectations.,demo
+GOOGL,2024-01-03,Alphabet ad recovery gains traction,Agency checks suggested healthier search and YouTube budgets.,demo
+GOOGL,2024-01-04,Alphabet regulatory and ad risks persist,Legal uncertainty and cautious advertiser budgets weighed on expectations.,demo
+GOOGL,2024-01-05,Alphabet regulatory and ad risks persist,Legal uncertainty and cautious advertiser budgets weighed on expectations.,demo
+GOOGL,2024-01-08,Alphabet ad recovery offsets legal pressure,Search trends improved but regulatory concerns kept the outlook mixed.,demo
+GOOGL,2024-01-09,Alphabet ad recovery gains traction,Agency checks suggested healthier search and YouTube budgets.,demo
+GOOGL,2024-01-10,Alphabet regulatory and ad risks persist,Legal uncertainty and cautious advertiser budgets weighed on expectations.,demo
+GOOGL,2024-01-11,Alphabet regulatory and ad risks persist,Legal uncertainty and cautious advertiser budgets weighed on expectations.,demo
+GOOGL,2024-01-12,Alphabet ad recovery gains traction,Agency checks suggested healthier search and YouTube budgets.,demo
+GOOGL,2024-01-16,Alphabet regulatory and ad risks persist,Legal uncertainty and cautious advertiser budgets weighed on expectations.,demo
+GOOGL,2024-01-17,Alphabet ad recovery gains traction,Agency checks suggested healthier search and YouTube budgets.,demo
+GOOGL,2024-01-18,Alphabet ad recovery offsets legal pressure,Search trends improved but regulatory concerns kept the outlook mixed.,demo
+GOOGL,2024-01-19,Alphabet ad recovery gains traction,Agency checks suggested healthier search and YouTube budgets.,demo
+AMZN,2024-01-02,Amazon margins and AWS demand improve,Retail efficiency and cloud pipeline checks supported a better outlook.,demo
+AMZN,2024-01-03,Amazon margins and AWS demand improve,Retail efficiency and cloud pipeline checks supported a better outlook.,demo
+AMZN,2024-01-04,Amazon margins and AWS demand improve,Retail efficiency and cloud pipeline checks supported a better outlook.,demo
+AMZN,2024-01-05,Amazon AWS rebound offsets retail caution,Cloud checks improved while consumer spending concerns stayed visible.,demo
+AMZN,2024-01-08,Amazon consumer demand concerns rise,Retail spending worries and valuation concerns pressured sentiment.,demo
+AMZN,2024-01-09,Amazon margins and AWS demand improve,Retail efficiency and cloud pipeline checks supported a better outlook.,demo
+AMZN,2024-01-10,Amazon consumer demand concerns rise,Retail spending worries and valuation concerns pressured sentiment.,demo
+AMZN,2024-01-11,Amazon consumer demand concerns rise,Retail spending worries and valuation concerns pressured sentiment.,demo
+AMZN,2024-01-12,Amazon margins and AWS demand improve,Retail efficiency and cloud pipeline checks supported a better outlook.,demo
+AMZN,2024-01-16,Amazon margins and AWS demand improve,Retail efficiency and cloud pipeline checks supported a better outlook.,demo
+AMZN,2024-01-17,Amazon AWS rebound offsets retail caution,Cloud checks improved while consumer spending concerns stayed visible.,demo
+AMZN,2024-01-18,Amazon consumer demand concerns rise,Retail spending worries and valuation concerns pressured sentiment.,demo
+AMZN,2024-01-19,Amazon margins and AWS demand improve,Retail efficiency and cloud pipeline checks supported a better outlook.,demo
+META,2024-01-02,Meta spending concerns return,Investors questioned AI infrastructure costs and margin risk.,demo
+META,2024-01-03,Meta spending concerns return,Investors questioned AI infrastructure costs and margin risk.,demo
+META,2024-01-04,Meta engagement improves as spending worries linger,Ad tools performed well but AI infrastructure cost concerns remained.,demo
+META,2024-01-05,Meta engagement and ad tools strengthen,Advertiser conversion trends and cost discipline improved sentiment.,demo
+META,2024-01-08,Meta spending concerns return,Investors questioned AI infrastructure costs and margin risk.,demo
+META,2024-01-09,Meta spending concerns return,Investors questioned AI infrastructure costs and margin risk.,demo
+META,2024-01-10,Meta engagement and ad tools strengthen,Advertiser conversion trends and cost discipline improved sentiment.,demo
+META,2024-01-11,Meta spending concerns return,Investors questioned AI infrastructure costs and margin risk.,demo
+META,2024-01-12,Meta engagement and ad tools strengthen,Advertiser conversion trends and cost discipline improved sentiment.,demo
+META,2024-01-16,Meta engagement improves as spending worries linger,Ad tools performed well but AI infrastructure cost concerns remained.,demo
+META,2024-01-17,Meta engagement and ad tools strengthen,Advertiser conversion trends and cost discipline improved sentiment.,demo
+META,2024-01-18,Meta engagement and ad tools strengthen,Advertiser conversion trends and cost discipline improved sentiment.,demo
+META,2024-01-19,Meta engagement and ad tools strengthen,Advertiser conversion trends and cost discipline improved sentiment.,demo
+TSLA,2024-01-02,Tesla margin pressure persists,"Discounting, recalls, and competition weighed on investor confidence.",demo
+TSLA,2024-01-03,Tesla demand improves while margins remain pressured,Order rates recovered but investors continued watching price cuts.,demo
+TSLA,2024-01-04,Tesla margin pressure persists,"Discounting, recalls, and competition weighed on investor confidence.",demo
+TSLA,2024-01-05,Tesla order rates recover,Pricing actions and energy storage growth helped demand sentiment.,demo
+TSLA,2024-01-08,Tesla order rates recover,Pricing actions and energy storage growth helped demand sentiment.,demo
+TSLA,2024-01-09,Tesla order rates recover,Pricing actions and energy storage growth helped demand sentiment.,demo
+TSLA,2024-01-10,Tesla order rates recover,Pricing actions and energy storage growth helped demand sentiment.,demo
+TSLA,2024-01-11,Tesla margin pressure persists,"Discounting, recalls, and competition weighed on investor confidence.",demo
+TSLA,2024-01-12,Tesla demand improves while margins remain pressured,Order rates recovered but investors continued watching price cuts.,demo
+TSLA,2024-01-16,Tesla margin pressure persists,"Discounting, recalls, and competition weighed on investor confidence.",demo
+TSLA,2024-01-17,Tesla margin pressure persists,"Discounting, recalls, and competition weighed on investor confidence.",demo
+TSLA,2024-01-18,Tesla order rates recover,Pricing actions and energy storage growth helped demand sentiment.,demo
+TSLA,2024-01-19,Tesla order rates recover,Pricing actions and energy storage growth helped demand sentiment.,demo
