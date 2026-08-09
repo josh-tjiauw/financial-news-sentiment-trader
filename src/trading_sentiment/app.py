@@ -57,6 +57,23 @@ def show_grouped_bar_chart(
     st.pyplot(fig, clear_figure=True)
 
 
+def show_excess_return_chart(summary: pd.DataFrame) -> None:
+    if summary.empty or "excess_return" not in summary.columns:
+        return
+
+    rows = summary.sort_values("excess_return")
+    colors = ["#c2410c" if value < 0 else "#15803d" for value in rows["excess_return"]]
+    fig, ax = plt.subplots(figsize=(9, 4))
+    bars = ax.barh(rows["ticker"], rows["excess_return"], color=colors)
+    ax.axvline(0, color="#334155", linewidth=1)
+    ax.set_xlabel("Strategy return minus buy/hold return")
+    ax.xaxis.set_major_formatter(PercentFormatter(1.0))
+    ax.grid(axis="x", alpha=0.25)
+    ax.bar_label(bars, labels=[f"{value:.1%}" for value in rows["excess_return"]], padding=4)
+    fig.tight_layout()
+    st.pyplot(fig, clear_figure=True)
+
+
 def build_metric_score_chart(metric_comparison: pd.DataFrame) -> pd.DataFrame:
     if metric_comparison.empty:
         return pd.DataFrame(columns=["model", "metric", "score"])
@@ -80,6 +97,28 @@ def build_prediction_signal_counts(predictions: pd.DataFrame) -> pd.DataFrame:
         .size()
         .reset_index(name="count")
         .sort_values(["ticker", "signal"])
+    )
+
+
+def build_latest_signals(predictions: pd.DataFrame) -> pd.DataFrame:
+    required_columns = {"ticker", "date", "predicted_label"}
+    if predictions.empty or not required_columns.issubset(predictions.columns):
+        return pd.DataFrame(columns=["ticker", "date", "signal"])
+
+    rows = predictions.copy()
+    rows["date"] = pd.to_datetime(rows["date"])
+    rows["signal"] = rows["predicted_label"].astype(int).map(SIGNAL_LABELS).fillna("Other")
+    display_columns = ["ticker", "date", "signal"]
+    if "prediction_confidence" in rows.columns:
+        display_columns.append("prediction_confidence")
+
+    return (
+        rows.sort_values(["ticker", "date"])
+        .groupby("ticker", as_index=False)
+        .tail(1)[display_columns]
+        .sort_values("ticker")
+        .assign(date=lambda frame: frame["date"].dt.date.astype(str))
+        .reset_index(drop=True)
     )
 
 
@@ -161,85 +200,41 @@ with st.sidebar:
         format="%.4f",
     )
 
-if metrics is not None:
-    metric_comparison = build_metric_comparison(metrics)
-    if not metric_comparison.empty:
-        st.header("Model vs Naive Baselines")
-        metric_cols = st.columns(3)
-        metric_cols[0].metric("Rows", int(metrics.get("row_count", 0)))
-        model_row = metric_comparison.iloc[0]
-        naive_rows = metric_comparison.iloc[1:]
-        best_naive_accuracy = naive_rows["accuracy"].max() if not naive_rows.empty else 0.0
-        best_naive_f1 = naive_rows["macro_f1"].max() if not naive_rows.empty else 0.0
-        metric_cols[1].metric(
-            "Model accuracy",
-            f"{model_row['accuracy']:.1%}",
-            delta=f"{model_row['accuracy'] - best_naive_accuracy:.1%} vs best naive",
-        )
-        metric_cols[2].metric(
-            "Model macro F1",
-            f"{model_row['macro_f1']:.1%}",
-            delta=f"{model_row['macro_f1'] - best_naive_f1:.1%} vs best naive",
-        )
-        metric_chart = build_metric_score_chart(metric_comparison)
-        show_grouped_bar_chart(
-            metric_chart,
-            index="model",
-            columns="metric",
-            values="score",
-            ylabel="Score",
-            percent_axis=True,
-        )
-        st.dataframe(metric_comparison, width="stretch")
+filtered_dataset = filter_by_tickers(dataset, selected_tickers) if dataset is not None else None
+filtered_predictions = (
+    filter_by_tickers(predictions, selected_tickers) if predictions is not None else None
+)
+
+st.header("Prediction Signals")
+if filtered_predictions is not None:
+    signal_cols = st.columns(3)
+    signal_cols[0].metric("Prediction rows", len(filtered_predictions))
+    signal_cols[1].metric("Tickers", filtered_predictions["ticker"].nunique())
+    signal_cols[2].metric("Latest date", str(filtered_predictions["date"].max()))
+
+    latest_signals = build_latest_signals(filtered_predictions)
+    st.subheader("Latest Signal by Ticker")
+    st.dataframe(latest_signals, width="stretch")
+
+    signal_counts = build_prediction_signal_counts(filtered_predictions)
+    if not signal_counts.empty:
+        st.subheader("Signal History")
+        st.bar_chart(signal_counts, x="ticker", y="count", color="signal")
 else:
-    st.info("No metrics found yet. Run `train-baseline` first.")
-
-left, right = st.columns(2)
-
-with left:
-    st.subheader("Modeling dataset")
-    if dataset is not None:
-        filtered_dataset = filter_by_tickers(dataset, selected_tickers)
-        st.metric("Rows", len(filtered_dataset))
-        if "ticker" in filtered_dataset.columns:
-            st.metric("Tickers", filtered_dataset["ticker"].nunique())
-        st.dataframe(filtered_dataset.head(25), width="stretch")
-    else:
-        st.info("No modeling dataset found yet. Run `build-dataset` first.")
-
-with right:
-    st.subheader("Prediction signals")
-    if predictions is not None:
-        filtered_predictions = filter_by_tickers(predictions, selected_tickers)
-        st.metric("Prediction rows", len(filtered_predictions))
-        signal_counts = build_prediction_signal_counts(filtered_predictions)
-        if not signal_counts.empty:
-            st.bar_chart(signal_counts, x="ticker", y="count", color="signal")
-        st.dataframe(filtered_predictions.head(25), width="stretch")
-    else:
-        st.info("No predictions found yet. Run `train-baseline` first.")
+    st.info("No predictions found yet. Run `train-baseline` first.")
 
 st.header("Backtest")
-if predictions is not None:
+if filtered_predictions is not None:
     try:
-        filtered_predictions = filter_by_tickers(predictions, selected_tickers)
         summary, trades, equity_curve = backtest_predictions(
             filtered_predictions,
             initial_cash=initial_cash,
             transaction_cost=transaction_cost,
             slippage_pct=slippage_pct,
         )
-        st.subheader("Strategy vs Buy/Hold")
+        st.subheader("Excess Return vs Buy/Hold")
         if not summary.empty:
-            return_chart = build_return_chart(summary)
-            show_grouped_bar_chart(
-                return_chart,
-                index="ticker",
-                columns="series",
-                values="return",
-                ylabel="Return",
-                percent_axis=True,
-            )
+            show_excess_return_chart(summary)
             summary_columns = [
                 "ticker",
                 "strategy_return",
@@ -252,7 +247,7 @@ if predictions is not None:
             visible_columns = [column for column in summary_columns if column in summary.columns]
             st.dataframe(summary[visible_columns], width="stretch")
 
-        st.subheader("Average Equity Curve")
+        st.subheader("Average Equity Curve: Strategy vs Buy/Hold")
         if not equity_curve.empty:
             average_equity = build_average_equity_curve(equity_curve)
             st.line_chart(average_equity, x="date", y="equity", color="series")
@@ -264,3 +259,49 @@ if predictions is not None:
         st.warning(f"Backtest is not ready: {exc}")
 else:
     st.info("Backtest results will appear after predictions are available.")
+
+left, right = st.columns(2)
+
+with left:
+    st.header("Modeling Dataset")
+    if filtered_dataset is not None:
+        st.metric("Rows", len(filtered_dataset))
+        if "ticker" in filtered_dataset.columns:
+            st.metric("Tickers", filtered_dataset["ticker"].nunique())
+        st.dataframe(filtered_dataset.head(25), width="stretch")
+    else:
+        st.info("No modeling dataset found yet. Run `build-dataset` first.")
+
+with right:
+    st.header("Model Accuracy")
+    if metrics is not None:
+        metric_comparison = build_metric_comparison(metrics)
+        if not metric_comparison.empty:
+            metric_cols = st.columns(3)
+            metric_cols[0].metric("Rows", int(metrics.get("row_count", 0)))
+            model_row = metric_comparison.iloc[0]
+            naive_rows = metric_comparison.iloc[1:]
+            best_naive_accuracy = naive_rows["accuracy"].max() if not naive_rows.empty else 0.0
+            best_naive_f1 = naive_rows["macro_f1"].max() if not naive_rows.empty else 0.0
+            metric_cols[1].metric(
+                "Accuracy",
+                f"{model_row['accuracy']:.1%}",
+                delta=f"{model_row['accuracy'] - best_naive_accuracy:.1%} vs best naive",
+            )
+            metric_cols[2].metric(
+                "Macro F1",
+                f"{model_row['macro_f1']:.1%}",
+                delta=f"{model_row['macro_f1'] - best_naive_f1:.1%} vs best naive",
+            )
+            metric_chart = build_metric_score_chart(metric_comparison)
+            show_grouped_bar_chart(
+                metric_chart,
+                index="model",
+                columns="metric",
+                values="score",
+                ylabel="Score",
+                percent_axis=True,
+            )
+            st.dataframe(metric_comparison, width="stretch")
+    else:
+        st.info("No metrics found yet. Run `train-baseline` first.")
