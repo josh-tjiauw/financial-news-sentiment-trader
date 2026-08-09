@@ -122,6 +122,40 @@ def test_build_weekly_signal_timeline_aggregates_by_ticker_week():
     ]
 
 
+def test_build_weekly_signal_timeline_can_include_empty_weeks():
+    predictions = pd.DataFrame(
+        [
+            {"ticker": "AAPL", "date": "2024-09-30", "predicted_label": 1},
+            {"ticker": "AAPL", "date": "2024-10-14", "predicted_label": -1},
+        ]
+    )
+
+    timeline = build_weekly_signal_timeline(predictions, include_empty_weeks=True)
+
+    assert timeline[["ticker", "week_start", "weekly_signal", "prediction_count"]].to_dict(
+        "records"
+    ) == [
+        {
+            "ticker": "AAPL",
+            "week_start": "2024-09-30",
+            "weekly_signal": "Buy",
+            "prediction_count": 1,
+        },
+        {
+            "ticker": "AAPL",
+            "week_start": "2024-10-07",
+            "weekly_signal": "No signal",
+            "prediction_count": 0,
+        },
+        {
+            "ticker": "AAPL",
+            "week_start": "2024-10-14",
+            "weekly_signal": "Sell",
+            "prediction_count": 1,
+        },
+    ]
+
+
 def test_build_return_chart_compares_strategy_to_buy_hold():
     summary = pd.DataFrame(
         [

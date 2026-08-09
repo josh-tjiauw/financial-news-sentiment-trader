@@ -47,6 +47,8 @@ def fetch_alpha_vantage_news_command(args: argparse.Namespace) -> None:
         start_date=args.start,
         end_date=args.end,
         limit=args.limit,
+        sort=args.sort,
+        request_interval_seconds=args.request_interval_seconds,
     )
     save_news_csv(news, args.output)
     print(
@@ -217,19 +219,31 @@ def build_parser() -> argparse.ArgumentParser:
     )
     fetch_alpha_news.add_argument(
         "--start",
-        default="2024-10-01",
+        default="2024-09-30",
         help="Start date, YYYY-MM-DD",
     )
     fetch_alpha_news.add_argument(
         "--end",
-        default="2024-12-31",
+        default="2024-12-16",
         help="End date, YYYY-MM-DD",
+    )
+    fetch_alpha_news.add_argument(
+        "--sort",
+        default="EARLIEST",
+        choices=["LATEST", "EARLIEST", "RELEVANCE"],
+        help="Alpha Vantage result sort order",
     )
     fetch_alpha_news.add_argument(
         "--limit",
         default=1000,
         type=int,
         help="Maximum Alpha Vantage articles to request, capped at 1000",
+    )
+    fetch_alpha_news.add_argument(
+        "--request-interval-seconds",
+        default=1.1,
+        type=float,
+        help="Delay between per-ticker API requests for free-key rate limits",
     )
     fetch_alpha_news.add_argument(
         "--api-key",

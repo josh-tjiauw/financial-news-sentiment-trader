@@ -161,17 +161,17 @@ For a dated class-project window, use Alpha Vantage's News & Sentiment API. Keep
 export ALPHA_VANTAGE_API_KEY="your-api-key"
 ```
 
-Then fetch the Oct-Dec 2024 news window:
+Then fetch the Sep 30-Dec 16, 2024 news window:
 
 ```bash
-py -m trading_sentiment.cli fetch-alpha-vantage-news --tickers AAPL,MSFT,NVDA,TSLA,AMZN,GOOGL,META --start 2024-10-01 --end 2024-12-31 --output data/raw/news.csv
+py -m trading_sentiment.cli fetch-alpha-vantage-news --tickers AAPL,MSFT,NVDA,TSLA,AMZN,GOOGL,META --start 2024-09-30 --end 2024-12-16 --output data/raw/news.csv
 ```
 
 On Windows PowerShell:
 
 ```powershell
 $env:ALPHA_VANTAGE_API_KEY = "your-api-key"
-py -m trading_sentiment.cli fetch-alpha-vantage-news --tickers AAPL,MSFT,NVDA,TSLA,AMZN,GOOGL,META --start 2024-10-01 --end 2024-12-31 --output data/raw/news.csv
+py -m trading_sentiment.cli fetch-alpha-vantage-news --tickers AAPL,MSFT,NVDA,TSLA,AMZN,GOOGL,META --start 2024-09-30 --end 2024-12-16 --output data/raw/news.csv
 ```
 
 ### 5. Import historical news from a CSV dataset
@@ -203,10 +203,10 @@ See [`data/DATASETS.md`](data/DATASETS.md) for dataset rules, schemas, and quali
 ### 6. Fetch real historical prices
 
 ```bash
-trading-sentiment fetch-prices --tickers AAPL,MSFT,NVDA,TSLA,AMZN,GOOGL,META --start 2024-10-01 --end 2025-01-03 --output data/raw/prices.csv
+trading-sentiment fetch-prices --tickers AAPL,MSFT,NVDA,TSLA,AMZN,GOOGL,META --start 2024-09-30 --end 2024-12-20 --output data/raw/prices.csv
 ```
 
-The price end date extends slightly into Jan 2025 so next-day labels can still be generated for late-Dec 2024 rows.
+The price end date extends slightly past Dec 16 so next-day labels can still be generated for the last project-window rows.
 
 ### 7. Build a real modeling dataset
 

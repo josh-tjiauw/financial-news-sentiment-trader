@@ -90,6 +90,7 @@ def show_weekly_signal_timeline_chart(weekly_signals: pd.DataFrame) -> None:
         "Buy": {"color": "#15803d", "marker": "^"},
         "Hold": {"color": "#64748b", "marker": "o"},
         "Sell": {"color": "#c2410c", "marker": "v"},
+        "No signal": {"color": "#cbd5e1", "marker": "x"},
     }
 
     fig_height = max(4, min(8, 1.0 + len(tickers) * 0.55))
@@ -101,12 +102,12 @@ def show_weekly_signal_timeline_chart(weekly_signals: pd.DataFrame) -> None:
         ax.scatter(
             signal_rows["week_start"],
             signal_rows["ticker_position"],
-            s=80 + (signal_rows["prediction_count"] * 25),
+            s=70 + (signal_rows["prediction_count"] * 25),
             c=style["color"],
             marker=style["marker"],
             label=signal,
             alpha=0.9,
-            edgecolors="white",
+            edgecolors="white" if signal != "No signal" else "#cbd5e1",
             linewidths=0.8,
         )
 
@@ -116,7 +117,7 @@ def show_weekly_signal_timeline_chart(weekly_signals: pd.DataFrame) -> None:
     ax.set_ylabel("")
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
     ax.grid(axis="x", alpha=0.25)
-    ax.legend(title="Weekly signal", loc="upper center", ncols=3, bbox_to_anchor=(0.5, 1.16))
+    ax.legend(title="Weekly signal", loc="upper center", ncols=4, bbox_to_anchor=(0.5, 1.16))
     fig.autofmt_xdate(rotation=30, ha="right")
     fig.tight_layout()
     st.pyplot(fig, clear_figure=True)
@@ -261,7 +262,10 @@ if filtered_predictions is not None:
     signal_cols[2].metric("Latest date", str(filtered_predictions["date"].max()))
 
     latest_signals = build_latest_signals(filtered_predictions)
-    weekly_signals = build_weekly_signal_timeline(filtered_predictions)
+    weekly_signals = build_weekly_signal_timeline(
+        filtered_predictions,
+        include_empty_weeks=True,
+    )
     if not weekly_signals.empty:
         st.subheader("Weekly Buy/Sell Signal Timeline")
         show_weekly_signal_timeline_chart(weekly_signals)

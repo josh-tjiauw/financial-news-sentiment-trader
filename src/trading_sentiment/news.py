@@ -1,4 +1,5 @@
 import json
+import time as time_module
 from datetime import UTC, date, datetime, time
 from pathlib import Path
 from typing import Any
@@ -221,10 +222,12 @@ def _extract_alpha_vantage_news_items(
 def fetch_alpha_vantage_news(
     tickers: list[str],
     api_key: str,
-    start_date: str | date = "2024-10-01",
-    end_date: str | date = "2024-12-31",
+    start_date: str | date = "2024-09-30",
+    end_date: str | date = "2024-12-16",
     limit: int = 1000,
+    sort: str = "EARLIEST",
     timeout_seconds: int = 30,
+    request_interval_seconds: float = 1.1,
 ) -> pd.DataFrame:
     """Fetch historical ticker news from Alpha Vantage News & Sentiment API."""
     normalized_tickers = [ticker.upper().strip() for ticker in tickers if ticker.strip()]
@@ -235,26 +238,36 @@ def fetch_alpha_vantage_news(
     if limit <= 0:
         raise ValueError("limit must be greater than zero")
 
-    query = urlencode(
-        {
-            "function": "NEWS_SENTIMENT",
-            "tickers": ",".join(normalized_tickers),
-            "time_from": _format_alpha_vantage_time(start_date, time.min),
-            "time_to": _format_alpha_vantage_time(end_date, time.max),
-            "limit": min(limit, 1000),
-            "apikey": api_key,
-        }
-    )
+    rows: list[dict[str, Any]] = []
+    for ticker_index, ticker in enumerate(normalized_tickers):
+        if ticker_index > 0 and request_interval_seconds > 0:
+            time_module.sleep(request_interval_seconds)
 
-    with urlopen(f"{_ALPHA_VANTAGE_NEWS_URL}?{query}", timeout=timeout_seconds) as response:
-        payload = json.loads(response.read().decode("utf-8"))
+        query = urlencode(
+            {
+                "function": "NEWS_SENTIMENT",
+                "tickers": ticker,
+                "time_from": _format_alpha_vantage_time(start_date, time.min),
+                "time_to": _format_alpha_vantage_time(end_date, time.max),
+                "sort": sort,
+                "limit": min(limit, 1000),
+                "apikey": api_key,
+            }
+        )
 
-    if "Error Message" in payload:
-        raise ValueError(f"Alpha Vantage error: {payload['Error Message']}")
-    if "Information" in payload and "feed" not in payload:
-        raise ValueError(f"Alpha Vantage response did not include news feed: {payload['Information']}")
+        with urlopen(f"{_ALPHA_VANTAGE_NEWS_URL}?{query}", timeout=timeout_seconds) as response:
+            payload = json.loads(response.read().decode("utf-8"))
 
-    rows = _extract_alpha_vantage_news_items(normalized_tickers, payload)
+        if "Error Message" in payload:
+            raise ValueError(f"Alpha Vantage error for {ticker}: {payload['Error Message']}")
+        if "Information" in payload and "feed" not in payload:
+            raise ValueError(
+                f"Alpha Vantage response did not include news feed for {ticker}: "
+                f"{payload['Information']}"
+            )
+
+        rows.extend(_extract_alpha_vantage_news_items([ticker], payload))
+
     return pd.DataFrame(rows, columns=_NEWS_COLUMNS)
 
 

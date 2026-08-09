@@ -78,7 +78,10 @@ def build_prediction_signal_counts(predictions: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def build_weekly_signal_timeline(predictions: pd.DataFrame) -> pd.DataFrame:
+def build_weekly_signal_timeline(
+    predictions: pd.DataFrame,
+    include_empty_weeks: bool = False,
+) -> pd.DataFrame:
     """Aggregate prediction labels into one weekly signal per ticker."""
     required_columns = {"ticker", "date", "predicted_label"}
     if predictions.empty or not required_columns.issubset(predictions.columns):
@@ -102,6 +105,28 @@ def build_weekly_signal_timeline(predictions: pd.DataFrame) -> pd.DataFrame:
     weekly["weekly_signal"] = weekly["signal_score"].apply(
         lambda score: "Buy" if score > 0 else "Sell" if score < 0 else "Hold"
     )
+
+    if include_empty_weeks:
+        tickers = sorted(rows["ticker"].astype(str).unique())
+        week_index = pd.date_range(
+            rows["week_start"].min(),
+            rows["week_start"].max(),
+            freq="W-MON",
+        )
+        full_index = pd.MultiIndex.from_product(
+            [tickers, week_index],
+            names=["ticker", "week_start"],
+        )
+        weekly = (
+            weekly.set_index(["ticker", "week_start"])
+            .reindex(full_index)
+            .reset_index()
+            .assign(
+                weekly_signal=lambda frame: frame["weekly_signal"].fillna("No signal"),
+                prediction_count=lambda frame: frame["prediction_count"].fillna(0).astype(int),
+            )
+        )
+
     weekly["week_start"] = weekly["week_start"].dt.date.astype(str)
     return weekly[["ticker", "week_start", "weekly_signal", "signal_score", "prediction_count"]]
 
