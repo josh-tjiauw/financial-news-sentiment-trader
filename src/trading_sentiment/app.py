@@ -17,10 +17,9 @@ from trading_sentiment.dashboard import (
 
 st.set_page_config(page_title="Financial News Sentiment Trader", layout="wide")
 
-PROJECT_ROOT = Path.cwd()
-DEFAULT_DATASET = PROJECT_ROOT / "data" / "processed" / "demo_modeling_dataset.csv"
-DEFAULT_PREDICTIONS = PROJECT_ROOT / "reports" / "demo_baseline_predictions.csv"
-DEFAULT_METRICS = PROJECT_ROOT / "reports" / "demo_baseline_metrics.json"
+DEFAULT_DATASET = Path("data/processed/demo_modeling_dataset.csv")
+DEFAULT_PREDICTIONS = Path("reports/demo_baseline_predictions.csv")
+DEFAULT_METRICS = Path("reports/demo_baseline_metrics.json")
 
 
 @st.cache_data
@@ -38,10 +37,32 @@ st.title("Financial News Sentiment Trader")
 st.caption("News-driven stock movement modeling and strategy backtesting")
 
 with st.sidebar:
-    st.header("Inputs")
-    dataset_path = st.text_input("Modeling dataset CSV", str(DEFAULT_DATASET))
-    predictions_path = st.text_input("Predictions CSV", str(DEFAULT_PREDICTIONS))
-    metrics_path = st.text_input("Metrics JSON", str(DEFAULT_METRICS))
+    st.header("Dataset")
+    data_source = st.selectbox("Source", ["Included demo", "Custom files"])
+
+    if data_source == "Custom files":
+        with st.expander("File paths", expanded=True):
+            dataset_path = Path(st.text_input("Modeling dataset CSV", str(DEFAULT_DATASET)))
+            predictions_path = Path(st.text_input("Predictions CSV", str(DEFAULT_PREDICTIONS)))
+            metrics_path = Path(st.text_input("Metrics JSON", str(DEFAULT_METRICS)))
+    else:
+        dataset_path = DEFAULT_DATASET
+        predictions_path = DEFAULT_PREDICTIONS
+        metrics_path = DEFAULT_METRICS
+
+dataset = load_csv(str(dataset_path)) if Path(dataset_path).exists() else None
+predictions = load_csv(str(predictions_path)) if Path(predictions_path).exists() else None
+metrics = load_metrics(str(metrics_path)) if Path(metrics_path).exists() else None
+available_tickers = collect_tickers(dataset, predictions)
+
+with st.sidebar:
+    st.header("Filters")
+    selected_tickers = st.multiselect(
+        "Tickers",
+        available_tickers,
+        default=available_tickers,
+    )
+    st.header("Backtest")
     initial_cash = st.number_input("Initial cash per ticker", min_value=1000.0, value=100_000.0)
     transaction_cost = st.number_input("Transaction cost per trade", min_value=0.0, value=0.0)
     slippage_pct = st.number_input(
@@ -50,24 +71,6 @@ with st.sidebar:
         value=0.0,
         format="%.4f",
     )
-
-dataset = load_csv(str(dataset_path)) if Path(dataset_path).exists() else None
-predictions = load_csv(str(predictions_path)) if Path(predictions_path).exists() else None
-metrics = load_metrics(str(metrics_path)) if Path(metrics_path).exists() else None
-available_tickers = collect_tickers(dataset, predictions)
-
-with st.sidebar:
-    selected_tickers = st.multiselect(
-        "Tickers",
-        available_tickers,
-        default=available_tickers,
-    )
-
-st.header("Pipeline")
-st.code(
-    "fetch news/prices -> build dataset -> train baseline -> backtest predictions",
-    language="text",
-)
 
 if metrics is not None:
     metric_comparison = build_metric_comparison(metrics)
@@ -134,9 +137,3 @@ if predictions is not None:
         st.warning(f"Backtest is not ready: {exc}")
 else:
     st.info("Backtest results will appear after predictions are available.")
-
-st.header("How to run")
-st.code(
-    "py -m streamlit run src/trading_sentiment/app.py",
-    language="bash",
-)
