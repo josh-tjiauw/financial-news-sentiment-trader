@@ -3,7 +3,7 @@ AAPL,2024-01-02,Apple services demand lifts outlook,Analysts cited resilient App
 AAPL,2024-01-03,Apple hardware demand weakens,Investors reacted to softer iPhone channel checks and cautious supplier commentary.,demo
 AAPL,2024-01-04,Apple AI update boosts sentiment,New device AI features improved expectations for the next upgrade cycle.,demo
 AAPL,2024-01-05,Apple buybacks support shares,Management commentary pointed to strong cash flow and shareholder returns.,demo
-AAPL,2024-01-08,Apple valuation pressure returns,Some analysts warned that premium valuation leaves limited room for slower growth.,demo
+AAPL,2024-01-08,Apple AI momentum continues,Analysts highlighted improving device demand even as shares faded into the close.,demo
 MSFT,2024-01-02,Microsoft cloud demand remains strong,Enterprise Azure demand and AI workloads supported a positive revenue outlook.,demo
 MSFT,2024-01-03,Microsoft AI products expand,New enterprise copilots increased optimism around software monetization.,demo
 MSFT,2024-01-04,Microsoft faces cautious guidance,Management noted slower customer optimization trends in some cloud segments.,demo
@@ -18,7 +18,7 @@ GOOGL,2024-01-02,Alphabet ad demand softens,Advertisers remained cautious and se
 GOOGL,2024-01-03,Alphabet cloud margins improve,Cost discipline and better cloud profitability supported a stronger outlook.,demo
 GOOGL,2024-01-04,Alphabet AI search tools gain traction,New AI features increased confidence in long-term search engagement.,demo
 GOOGL,2024-01-05,Alphabet regulatory pressure weighs,Investors focused on legal risk and possible limits on ad targeting.,demo
-GOOGL,2024-01-08,Alphabet advertising recovery improves,Agency checks pointed to healthier digital ad budgets and stable search demand.,demo
+GOOGL,2024-01-08,Alphabet regulatory pressure persists,Legal uncertainty weighed on sentiment even as ad demand stabilized.,demo
 AMZN,2024-01-02,Amazon retail margins improve,Fulfillment efficiency and advertising growth lifted sentiment on profitability.,demo
 AMZN,2024-01-03,Amazon consumer spending concerns rise,Investors worried that discretionary demand could weaken near-term retail sales.,demo
 AMZN,2024-01-04,Amazon cloud demand rebounds,AWS pipeline checks improved after several quarters of customer optimization.,demo
@@ -28,9 +28,9 @@ META,2024-01-02,Meta ad engagement strengthens,Reels monetization and better tar
 META,2024-01-03,Meta spending concerns weigh,Investors questioned whether AI and metaverse expenses could pressure margins.,demo
 META,2024-01-04,Meta cost discipline supports margins,Management continued emphasizing efficiency and expense controls.,demo
 META,2024-01-05,Meta AI tools lift advertiser demand,New campaign tools helped advertisers improve conversion performance.,demo
-META,2024-01-08,Meta revenue outlook improves,Analysts cited healthy social ad budgets and rising engagement.,demo
+META,2024-01-08,Meta spending concerns return,Investors questioned AI infrastructure costs despite stronger engagement trends.,demo
 TSLA,2024-01-02,Tesla deliveries miss expectations,Investors reacted to softer delivery numbers and rising competition.,demo
 TSLA,2024-01-03,Tesla pricing strategy improves demand,Lower prices helped order rates recover in key markets.,demo
 TSLA,2024-01-04,Tesla margin pressure persists,Analysts warned that discounting could continue weighing on automotive gross margin.,demo
 TSLA,2024-01-05,Tesla energy storage growth accelerates,Storage deployments and software potential improved sentiment.,demo
-TSLA,2024-01-08,Tesla recall headlines pressure shares,Investors focused on quality concerns and possible service costs.,demo
+TSLA,2024-01-08,Tesla order rates improve,Lower prices helped demand recover even as the stock finished weaker.,demo

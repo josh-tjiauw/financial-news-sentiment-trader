@@ -1,10 +1,10 @@
 ticker,date,cleaned_text,close,future_close,future_return,label,predicted_label,prediction_confidence
 NVDA,2024-01-05,nvidia data center sales impress revenue expectations improved after another round bullish analyst checks,320,340.0,0.0625,1,1,0.5716140682747204
 TSLA,2024-01-05,tesla energy storage growth accelerates storage deployments software potential improved sentiment,208,212.0,0.0192307692307692,1,1,0.5766133417614611
-AAPL,2024-01-08,apple valuation pressure returns some analysts warned premium valuation leaves limited room slower growth,108,107.0,-0.0092592592592592,-1,-1,0.524564614070341
+AAPL,2024-01-08,apple ai momentum continues analysts highlighted improving device demand even shares faded into close,108,107.0,-0.0092592592592592,-1,1,0.5653211306943141
 AMZN,2024-01-08,amazon valuation pressure emerges analysts warned expectations may too high after recent rally,158,157.0,-0.0063291139240506,-1,-1,0.5112765435993323
-GOOGL,2024-01-08,alphabet advertising recovery improves agency checks pointed healthier digital ad budgets stable search demand,144,148.0,0.0277777777777777,1,1,0.5490385881365626
-META,2024-01-08,meta revenue outlook improves analysts cited healthy social ad budgets rising engagement,99,101.0,0.0202020202020202,1,1,0.5692148258106827
+GOOGL,2024-01-08,alphabet regulatory pressure persists legal uncertainty weighed sentiment even ad demand stabilized,144,148.0,0.0277777777777777,1,-1,0.5538321438160516
+META,2024-01-08,meta spending concerns return investors questioned ai infrastructure costs despite stronger engagement trends,99,101.0,0.0202020202020202,1,-1,0.541127888767702
 MSFT,2024-01-08,microsoft raises cloud forecast analysts lifted estimates after signs durable ai infrastructure spending,209,213.0,0.0191387559808612,1,1,0.5554159367537126
 NVDA,2024-01-08,nvidia guidance beats expectations management commentary suggested ai infrastructure demand remains broad based,340,360.0,0.0588235294117647,1,1,0.5524065033796796
-TSLA,2024-01-08,tesla recall headlines pressure shares investors focused quality concerns possible service costs,212,205.0,-0.0330188679245283,-1,-1,0.5911718917409452
+TSLA,2024-01-08,tesla order rates improve lower prices helped demand recover even stock finished weaker,212,205.0,-0.0330188679245283,-1,1,0.5769778514981218

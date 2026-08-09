@@ -1,8 +1,9 @@
 # Sample Demo Results
 
 These results come from the small committed demo dataset under `data/raw/demo_news.csv` and
-`data/raw/demo_prices.csv`. The demo data is intentionally compact and educational; it is meant to
-show the full workflow and dashboard surface, not to support real trading decisions.
+`data/raw/demo_prices.csv`. The demo data is intentionally compact, educational, and slightly
+ambiguous; it is meant to show the full workflow and dashboard surface, not to support real trading
+decisions.
 
 ## Demo Data
 
@@ -16,7 +17,7 @@ show the full workflow and dashboard surface, not to support real trading decisi
 
 | Model | Accuracy | Macro F1 |
 | --- | ---: | ---: |
-| TF-IDF + logistic regression | 1.000 | 1.000 |
+| TF-IDF + logistic regression | 0.556 | 0.500 |
 | Majority class | 0.667 | 0.400 |
 | Stratified random | 0.556 | 0.500 |
 | Ticker prior | 0.556 | 0.500 |
@@ -31,13 +32,13 @@ Backtest assumptions:
 
 | Ticker | Strategy Return | Buy/Hold Return | Trade Count |
 | --- | ---: | ---: | ---: |
-| AAPL | 0.00% | 0.00% | 0 |
+| AAPL | -0.10% | 0.00% | 1 |
 | AMZN | 0.00% | 0.00% | 0 |
-| GOOGL | -0.10% | 0.00% | 1 |
-| META | -0.10% | 0.00% | 1 |
+| GOOGL | 0.00% | 0.00% | 0 |
+| META | 0.00% | 0.00% | 0 |
 | MSFT | -0.10% | 0.00% | 1 |
 | NVDA | 6.14% | 6.25% | 1 |
-| TSLA | 1.72% | 1.92% | 2 |
+| TSLA | 1.82% | 1.92% | 1 |
 
 ## Reproduce
 

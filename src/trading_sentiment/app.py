@@ -120,6 +120,10 @@ def build_average_equity_curve(equity_curve: pd.DataFrame) -> pd.DataFrame:
 
 st.title("Financial News Sentiment Trader")
 st.caption("News-driven stock movement modeling and strategy backtesting")
+st.info(
+    "The included demo is intentionally small and includes mixed-signal headlines. "
+    "Use it to inspect the workflow, not to judge real trading performance."
+)
 
 with st.sidebar:
     st.header("Dataset")
