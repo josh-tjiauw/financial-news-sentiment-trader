@@ -11,11 +11,7 @@ from matplotlib.ticker import PercentFormatter
 
 from trading_sentiment.backtest import backtest_predictions
 from trading_sentiment.dashboard import (
-    build_average_equity_curve,
     build_metric_comparison,
-    build_metric_score_chart,
-    build_prediction_signal_counts,
-    build_return_chart,
     collect_tickers,
     filter_by_tickers,
 )
@@ -26,6 +22,7 @@ st.set_page_config(page_title="Financial News Sentiment Trader", layout="wide")
 DEFAULT_DATASET = Path("data/processed/demo_modeling_dataset.csv")
 DEFAULT_PREDICTIONS = Path("reports/demo_baseline_predictions.csv")
 DEFAULT_METRICS = Path("reports/demo_baseline_metrics.json")
+SIGNAL_LABELS = {-1: "Sell", 0: "Hold", 1: "Buy"}
 
 
 @st.cache_data
@@ -58,6 +55,67 @@ def show_grouped_bar_chart(
         ax.yaxis.set_major_formatter(PercentFormatter(1.0))
     fig.tight_layout()
     st.pyplot(fig, clear_figure=True)
+
+
+def build_metric_score_chart(metric_comparison: pd.DataFrame) -> pd.DataFrame:
+    if metric_comparison.empty:
+        return pd.DataFrame(columns=["model", "metric", "score"])
+    return metric_comparison.melt(
+        id_vars="model",
+        value_vars=["accuracy", "macro_f1"],
+        var_name="metric",
+        value_name="score",
+    )
+
+
+def build_prediction_signal_counts(predictions: pd.DataFrame) -> pd.DataFrame:
+    required_columns = {"ticker", "predicted_label"}
+    if predictions.empty or not required_columns.issubset(predictions.columns):
+        return pd.DataFrame(columns=["ticker", "signal", "count"])
+
+    rows = predictions.copy()
+    rows["signal"] = rows["predicted_label"].astype(int).map(SIGNAL_LABELS).fillna("Other")
+    return (
+        rows.groupby(["ticker", "signal"])
+        .size()
+        .reset_index(name="count")
+        .sort_values(["ticker", "signal"])
+    )
+
+
+def build_return_chart(summary: pd.DataFrame) -> pd.DataFrame:
+    required_columns = {"ticker", "strategy_return", "buy_hold_return"}
+    if summary.empty or not required_columns.issubset(summary.columns):
+        return pd.DataFrame(columns=["ticker", "series", "return"])
+
+    sort_column = "excess_return" if "excess_return" in summary.columns else "strategy_return"
+    sorted_summary = summary.sort_values(sort_column, ascending=False)
+    return sorted_summary.melt(
+        id_vars="ticker",
+        value_vars=["strategy_return", "buy_hold_return"],
+        var_name="series",
+        value_name="return",
+    )
+
+
+def build_average_equity_curve(equity_curve: pd.DataFrame) -> pd.DataFrame:
+    required_columns = {"date", "equity", "buy_hold_equity"}
+    if equity_curve.empty or not required_columns.issubset(equity_curve.columns):
+        return pd.DataFrame(columns=["date", "series", "equity"])
+
+    averaged = (
+        equity_curve.groupby("date")[["equity", "buy_hold_equity"]]
+        .mean()
+        .reset_index()
+        .sort_values("date")
+    )
+    chart_data = averaged.melt(
+        id_vars="date",
+        value_vars=["equity", "buy_hold_equity"],
+        var_name="series",
+        value_name="value",
+    )
+    return chart_data.rename(columns={"value": "equity"})
 
 
 st.title("Financial News Sentiment Trader")
@@ -128,7 +186,7 @@ if metrics is not None:
             ylabel="Score",
             percent_axis=True,
         )
-        st.dataframe(metric_comparison, use_container_width=True)
+        st.dataframe(metric_comparison, width="stretch")
 else:
     st.info("No metrics found yet. Run `train-baseline` first.")
 
@@ -141,7 +199,7 @@ with left:
         st.metric("Rows", len(filtered_dataset))
         if "ticker" in filtered_dataset.columns:
             st.metric("Tickers", filtered_dataset["ticker"].nunique())
-        st.dataframe(filtered_dataset.head(25), use_container_width=True)
+        st.dataframe(filtered_dataset.head(25), width="stretch")
     else:
         st.info("No modeling dataset found yet. Run `build-dataset` first.")
 
@@ -153,7 +211,7 @@ with right:
         signal_counts = build_prediction_signal_counts(filtered_predictions)
         if not signal_counts.empty:
             st.bar_chart(signal_counts, x="ticker", y="count", color="signal")
-        st.dataframe(filtered_predictions.head(25), use_container_width=True)
+        st.dataframe(filtered_predictions.head(25), width="stretch")
     else:
         st.info("No predictions found yet. Run `train-baseline` first.")
 
@@ -188,16 +246,16 @@ if predictions is not None:
                 "sharpe_like",
             ]
             visible_columns = [column for column in summary_columns if column in summary.columns]
-            st.dataframe(summary[visible_columns], use_container_width=True)
+            st.dataframe(summary[visible_columns], width="stretch")
 
         st.subheader("Average Equity Curve")
         if not equity_curve.empty:
             average_equity = build_average_equity_curve(equity_curve)
             st.line_chart(average_equity, x="date", y="equity", color="series")
-        st.dataframe(equity_curve, use_container_width=True)
+        st.dataframe(equity_curve, width="stretch")
 
         st.subheader("Trades")
-        st.dataframe(trades, use_container_width=True)
+        st.dataframe(trades, width="stretch")
     except ValueError as exc:
         st.warning(f"Backtest is not ready: {exc}")
 else:
