@@ -4,6 +4,8 @@ from typing import Any
 
 import pandas as pd
 
+SIGNAL_LABELS = {-1: "Sell", 0: "Hold", 1: "Buy"}
+
 
 def collect_tickers(*frames: pd.DataFrame | None) -> list[str]:
     """Return sorted tickers from any loaded dashboard frames."""
@@ -46,3 +48,68 @@ def build_metric_comparison(metrics: dict[str, Any]) -> pd.DataFrame:
         )
 
     return pd.DataFrame(rows)
+
+
+def build_metric_score_chart(metric_comparison: pd.DataFrame) -> pd.DataFrame:
+    """Shape model metrics for a grouped score chart."""
+    if metric_comparison.empty:
+        return pd.DataFrame(columns=["model", "metric", "score"])
+    return metric_comparison.melt(
+        id_vars="model",
+        value_vars=["accuracy", "macro_f1"],
+        var_name="metric",
+        value_name="score",
+    )
+
+
+def build_prediction_signal_counts(predictions: pd.DataFrame) -> pd.DataFrame:
+    """Count buy/hold/sell predictions per ticker."""
+    required_columns = {"ticker", "predicted_label"}
+    if predictions.empty or not required_columns.issubset(predictions.columns):
+        return pd.DataFrame(columns=["ticker", "signal", "count"])
+
+    rows = predictions.copy()
+    rows["signal"] = rows["predicted_label"].astype(int).map(SIGNAL_LABELS).fillna("Other")
+    return (
+        rows.groupby(["ticker", "signal"])
+        .size()
+        .reset_index(name="count")
+        .sort_values(["ticker", "signal"])
+    )
+
+
+def build_return_chart(summary: pd.DataFrame) -> pd.DataFrame:
+    """Shape strategy and buy/hold returns for a ticker comparison chart."""
+    required_columns = {"ticker", "strategy_return", "buy_hold_return"}
+    if summary.empty or not required_columns.issubset(summary.columns):
+        return pd.DataFrame(columns=["ticker", "series", "return"])
+
+    sort_column = "excess_return" if "excess_return" in summary.columns else "strategy_return"
+    sorted_summary = summary.sort_values(sort_column, ascending=False)
+    return sorted_summary.melt(
+        id_vars="ticker",
+        value_vars=["strategy_return", "buy_hold_return"],
+        var_name="series",
+        value_name="return",
+    )
+
+
+def build_average_equity_curve(equity_curve: pd.DataFrame) -> pd.DataFrame:
+    """Average per-ticker equity curves into strategy-vs-buy/hold lines."""
+    required_columns = {"date", "equity", "buy_hold_equity"}
+    if equity_curve.empty or not required_columns.issubset(equity_curve.columns):
+        return pd.DataFrame(columns=["date", "series", "equity"])
+
+    averaged = (
+        equity_curve.groupby("date")[["equity", "buy_hold_equity"]]
+        .mean()
+        .reset_index()
+        .sort_values("date")
+    )
+    chart_data = averaged.melt(
+        id_vars="date",
+        value_vars=["equity", "buy_hold_equity"],
+        var_name="series",
+        value_name="value",
+    )
+    return chart_data.rename(columns={"value": "equity"})
