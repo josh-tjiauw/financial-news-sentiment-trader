@@ -115,10 +115,11 @@ def show_weekly_signal_timeline_chart(weekly_signals: pd.DataFrame) -> None:
     ax.set_yticklabels(tickers)
     ax.set_xlabel("Week of news")
     ax.set_ylabel("")
+    ax.set_xticks(sorted(rows["week_start"].unique()))
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
     ax.grid(axis="x", alpha=0.25)
     ax.legend(title="Weekly signal", loc="upper center", ncols=4, bbox_to_anchor=(0.5, 1.16))
-    fig.autofmt_xdate(rotation=30, ha="right")
+    fig.autofmt_xdate(rotation=45, ha="right")
     fig.tight_layout()
     st.pyplot(fig, clear_figure=True)
 
