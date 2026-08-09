@@ -14,7 +14,7 @@ Live demo: https://financial-news-sentiment-trader.streamlit.app/
 
 The app defaults to the committed multi-ticker demo artifacts, so it can be opened locally or deployed without first running the data pipeline.
 
-## Employer walkthrough
+## Walkthrough
 
 This project demonstrates an end-to-end financial news sentiment research workflow:
 
