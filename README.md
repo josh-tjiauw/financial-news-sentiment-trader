@@ -8,7 +8,7 @@ Use financial news headlines/summaries to estimate market sentiment, convert tha
 
 ## Dashboard preview
 
-Live demo: add the Streamlit Community Cloud URL here after deployment completes.
+Live demo: https://financial-news-sentiment-trader.streamlit.app/
 
 ![Financial News Sentiment Trader dashboard](docs/images/dashboard-demo.png)
 
@@ -248,7 +248,7 @@ The dashboard shows model-vs-naive metrics, ticker filters, the processed datase
 
 ## Deployment
 
-The repo is ready for Streamlit Community Cloud deployment.
+The repo is configured for Streamlit Community Cloud deployment.
 
 Use these settings:
 
@@ -262,7 +262,7 @@ Deployment checklist:
 
 - Confirm the deployed app opens with the committed demo data.
 - Confirm model comparison, ticker filters, backtest summary, equity curve, and trades render.
-- Add the deployed app URL to the `Live demo` line near the top of this README.
+- Keep the live demo URL near the top of this README up to date.
 
 ## Architecture diagram
 

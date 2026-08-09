@@ -41,4 +41,4 @@
 - [x] Add screenshots/GIF to README
 - [x] Add employer walkthrough to README
 - [x] Add deployment configuration
-- [ ] Deploy demo if practical
+- [x] Deploy demo if practical
