@@ -8,9 +8,38 @@ Use financial news headlines/summaries to estimate market sentiment, convert tha
 
 ## Dashboard preview
 
+Live demo: add the Streamlit Community Cloud URL here after deployment completes.
+
 ![Financial News Sentiment Trader dashboard](docs/images/dashboard-demo.png)
 
 The app defaults to the committed multi-ticker demo artifacts, so it can be opened locally or deployed without first running the data pipeline.
+
+## Employer walkthrough
+
+This project demonstrates an end-to-end financial news sentiment research workflow:
+
+1. Normalize news and price data into reproducible CSV artifacts.
+2. Build a modeling dataset that joins daily news with same-ticker market prices.
+3. Label each row from future price movement to reduce same-day label leakage.
+4. Train an explainable TF-IDF and logistic regression baseline.
+5. Compare the model against naive baselines before adding heavier NLP models.
+6. Convert predictions into long/cash signals and backtest them with transaction costs and slippage.
+7. Inspect the model, predictions, trades, equity curve, and strategy summary in Streamlit.
+
+Key technical decisions:
+
+- Chronological train/test split instead of random splitting, so evaluation better resembles future prediction.
+- Future-return labels instead of same-day labels, to avoid leaking information from the outcome day.
+- Naive baseline comparisons, so model accuracy has context.
+- File-backed pipeline stages, so each artifact can be inspected, reproduced, and reused.
+- Conservative backtesting assumptions with fixed fees and slippage.
+
+Known limitations:
+
+- The committed demo dataset is intentionally small and educational.
+- Yahoo Finance news is recent-news oriented, so serious historical backtesting needs a deeper news archive.
+- The baseline model is intentionally simple; FinBERT or another finance-specific model is a planned improvement.
+- This is an educational research tool, not financial advice or a production trading system.
 
 ## Planned pipeline
 
@@ -228,6 +257,12 @@ Use these settings:
 - Main file path: `src/trading_sentiment/app.py`
 
 Streamlit will install the package through `requirements.txt`, which points to this project with `-e .`.
+
+Deployment checklist:
+
+- Confirm the deployed app opens with the committed demo data.
+- Confirm model comparison, ticker filters, backtest summary, equity curve, and trades render.
+- Add the deployed app URL to the `Live demo` line near the top of this README.
 
 ## Architecture diagram
 

@@ -39,5 +39,6 @@
 
 - [x] Build initial Streamlit dashboard
 - [x] Add screenshots/GIF to README
+- [x] Add employer walkthrough to README
 - [x] Add deployment configuration
 - [ ] Deploy demo if practical
