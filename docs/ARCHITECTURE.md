@@ -9,7 +9,8 @@ flowchart TD
     subgraph Sources[External data sources]
         YahooNews[Yahoo Finance recent news]
         YahooPrices[Yahoo Finance historical prices]
-        HistoricalNews[Future: historical news archive]
+        AlphaNews[Alpha Vantage historical news]
+        HistoricalNews[Historical CSV archives]
     end
 
     subgraph RawData[Raw data layer]
@@ -52,8 +53,10 @@ flowchart TD
     end
 
     User -->|fetch-news| NewsModule
+    User -->|fetch-alpha-vantage-news| NewsModule
     User -->|fetch-prices| PriceModule
     YahooNews --> NewsModule --> RawNews
+    AlphaNews --> NewsModule --> RawNews
     HistoricalNews --> Importers --> RawNews
     YahooPrices --> PriceModule --> RawPrices
 
@@ -86,7 +89,7 @@ flowchart TD
 ## Current components
 
 - `trading_sentiment.cli` exposes the workflow as commands: fetch news, fetch prices, build dataset, and train baseline.
-- `trading_sentiment.news` loads already-normalized article data and fetches recent Yahoo Finance news.
+- `trading_sentiment.news` loads already-normalized article data, fetches recent Yahoo Finance news, and fetches bounded historical news windows from Alpha Vantage.
 - `trading_sentiment.importers` maps arbitrary historical-news CSV columns into the normalized project news schema, including a chunked `prepare-historical-news` path for large local/remote CSVs.
 - `trading_sentiment.prices` normalizes OHLCV price history by ticker/date.
 - `trading_sentiment.dataset` joins daily news with same-day prices and future close prices.
@@ -99,7 +102,7 @@ flowchart TD
 
 ## Data flow
 
-1. Fetch recent news or import historical news into `data/raw/news.csv`.
+1. Fetch recent news, fetch Alpha Vantage historical news, or import historical news into `data/raw/news.csv`.
 2. Fetch prices into `data/raw/prices.csv`.
 3. Build `data/processed/modeling_dataset.csv` by aligning ticker/date rows.
 4. Clean and combine article text into `cleaned_text`.
@@ -114,4 +117,4 @@ flowchart TD
 - Avoid label leakage: labels are based on future close prices while features come from current news text.
 - Keep pipeline stages file-backed so each step can be inspected and rerun independently.
 - Start with a simple, explainable baseline before adding heavier NLP models like FinBERT.
-- Treat Yahoo Finance news as a recent-news source only; serious historical backtesting needs a deeper news archive.
+- Treat Yahoo Finance news as a recent-news source only; use Alpha Vantage or a vetted archive when a dated historical project window is required.

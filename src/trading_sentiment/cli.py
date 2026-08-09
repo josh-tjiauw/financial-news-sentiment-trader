@@ -1,4 +1,5 @@
 import argparse
+import os
 from pathlib import Path
 
 from trading_sentiment.backtest import backtest_predictions_from_csv
@@ -15,7 +16,7 @@ from trading_sentiment.importers import (
     sample_remote_historical_news_csv,
 )
 from trading_sentiment.model import train_baseline_from_csv
-from trading_sentiment.news import fetch_yahoo_news, save_news_csv
+from trading_sentiment.news import fetch_alpha_vantage_news, fetch_yahoo_news, save_news_csv
 from trading_sentiment.prices import fetch_many_price_histories, save_prices_csv
 
 
@@ -30,6 +31,28 @@ def fetch_news_command(args: argparse.Namespace) -> None:
     )
     save_news_csv(news, args.output)
     print(f"Saved {len(news)} news rows to {args.output}")
+
+
+def fetch_alpha_vantage_news_command(args: argparse.Namespace) -> None:
+    api_key = args.api_key or os.getenv("ALPHA_VANTAGE_API_KEY")
+    if not api_key:
+        raise ValueError(
+            "Alpha Vantage API key is required. Set ALPHA_VANTAGE_API_KEY "
+            "or pass --api-key."
+        )
+
+    news = fetch_alpha_vantage_news(
+        _split_tickers(args.tickers),
+        api_key=api_key,
+        start_date=args.start,
+        end_date=args.end,
+        limit=args.limit,
+    )
+    save_news_csv(news, args.output)
+    print(
+        f"Saved {len(news)} Alpha Vantage news rows for {args.start} to "
+        f"{args.end} at {args.output}"
+    )
 
 
 def fetch_prices_command(args: argparse.Namespace) -> None:
@@ -182,6 +205,44 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output CSV path",
     )
     fetch_news.set_defaults(func=fetch_news_command)
+
+    fetch_alpha_news = subparsers.add_parser(
+        "fetch-alpha-vantage-news",
+        help="Download historical Alpha Vantage market news for a dated project window",
+    )
+    fetch_alpha_news.add_argument(
+        "--tickers",
+        required=True,
+        help="Comma-separated tickers, e.g. AAPL,MSFT,NVDA",
+    )
+    fetch_alpha_news.add_argument(
+        "--start",
+        default="2024-10-01",
+        help="Start date, YYYY-MM-DD",
+    )
+    fetch_alpha_news.add_argument(
+        "--end",
+        default="2024-12-31",
+        help="End date, YYYY-MM-DD",
+    )
+    fetch_alpha_news.add_argument(
+        "--limit",
+        default=1000,
+        type=int,
+        help="Maximum Alpha Vantage articles to request, capped at 1000",
+    )
+    fetch_alpha_news.add_argument(
+        "--api-key",
+        default=None,
+        help="Alpha Vantage API key; defaults to ALPHA_VANTAGE_API_KEY",
+    )
+    fetch_alpha_news.add_argument(
+        "--output",
+        default=Path("data/raw/news.csv"),
+        type=Path,
+        help="Output CSV path",
+    )
+    fetch_alpha_news.set_defaults(func=fetch_alpha_vantage_news_command)
 
     fetch_prices = subparsers.add_parser("fetch-prices", help="Download OHLCV prices")
     fetch_prices.add_argument(

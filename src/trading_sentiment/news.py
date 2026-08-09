@@ -1,11 +1,15 @@
-from datetime import UTC, datetime
+import json
+from datetime import UTC, date, datetime, time
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
 import pandas as pd
 
 _REQUIRED_COLUMNS = {"ticker", "published_date", "title"}
 _NEWS_COLUMNS = ["ticker", "published_date", "title", "summary", "source", "url"]
+_ALPHA_VANTAGE_NEWS_URL = "https://www.alphavantage.co/query"
 
 
 def load_news_csv(path: str | Path) -> pd.DataFrame:
@@ -90,6 +94,30 @@ def _parse_yahoo_timestamp(value: Any) -> datetime | None:
     return None
 
 
+def _coerce_date(value: str | date) -> date:
+    if isinstance(value, date):
+        return value
+    return datetime.strptime(value, "%Y-%m-%d").date()
+
+
+def _format_alpha_vantage_time(value: str | date, boundary: time) -> str:
+    return datetime.combine(_coerce_date(value), boundary).strftime("%Y%m%dT%H%M")
+
+
+def _parse_alpha_vantage_timestamp(value: Any) -> date | None:
+    if not value:
+        return None
+    if isinstance(value, date):
+        return value
+    if isinstance(value, str):
+        for date_format in ("%Y%m%dT%H%M%S", "%Y%m%dT%H%M"):
+            try:
+                return datetime.strptime(value, date_format).date()
+            except ValueError:
+                continue
+    return None
+
+
 def _extract_yahoo_news_item(ticker: str, item: dict[str, Any]) -> dict[str, Any] | None:
     """Normalize one yfinance Yahoo news item."""
     content = item.get("content", item)
@@ -149,6 +177,84 @@ def fetch_yahoo_news(tickers: list[str], max_articles_per_ticker: int = 25) -> p
             if row:
                 rows.append(row)
 
+    return pd.DataFrame(rows, columns=_NEWS_COLUMNS)
+
+
+def _extract_alpha_vantage_news_items(
+    tickers: list[str],
+    payload: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Normalize Alpha Vantage News & Sentiment API response rows."""
+    requested_tickers = {ticker.upper().strip() for ticker in tickers if ticker.strip()}
+    rows: list[dict[str, Any]] = []
+
+    for item in payload.get("feed", []):
+        title = item.get("title")
+        published_date = _parse_alpha_vantage_timestamp(item.get("time_published"))
+        if not title or published_date is None:
+            continue
+
+        article_tickers = {
+            str(sentiment.get("ticker", "")).upper().strip()
+            for sentiment in item.get("ticker_sentiment", [])
+            if sentiment.get("ticker")
+        }
+        matching_tickers = sorted(article_tickers & requested_tickers)
+        if not matching_tickers and len(requested_tickers) == 1:
+            matching_tickers = sorted(requested_tickers)
+
+        for ticker in matching_tickers:
+            rows.append(
+                {
+                    "ticker": ticker,
+                    "published_date": published_date,
+                    "title": str(title),
+                    "summary": str(item.get("summary") or ""),
+                    "source": str(item.get("source") or "Alpha Vantage"),
+                    "url": str(item.get("url") or ""),
+                }
+            )
+
+    return rows
+
+
+def fetch_alpha_vantage_news(
+    tickers: list[str],
+    api_key: str,
+    start_date: str | date = "2024-10-01",
+    end_date: str | date = "2024-12-31",
+    limit: int = 1000,
+    timeout_seconds: int = 30,
+) -> pd.DataFrame:
+    """Fetch historical ticker news from Alpha Vantage News & Sentiment API."""
+    normalized_tickers = [ticker.upper().strip() for ticker in tickers if ticker.strip()]
+    if not normalized_tickers:
+        return pd.DataFrame(columns=_NEWS_COLUMNS)
+    if not api_key:
+        raise ValueError("Alpha Vantage API key is required")
+    if limit <= 0:
+        raise ValueError("limit must be greater than zero")
+
+    query = urlencode(
+        {
+            "function": "NEWS_SENTIMENT",
+            "tickers": ",".join(normalized_tickers),
+            "time_from": _format_alpha_vantage_time(start_date, time.min),
+            "time_to": _format_alpha_vantage_time(end_date, time.max),
+            "limit": min(limit, 1000),
+            "apikey": api_key,
+        }
+    )
+
+    with urlopen(f"{_ALPHA_VANTAGE_NEWS_URL}?{query}", timeout=timeout_seconds) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+
+    if "Error Message" in payload:
+        raise ValueError(f"Alpha Vantage error: {payload['Error Message']}")
+    if "Information" in payload and "feed" not in payload:
+        raise ValueError(f"Alpha Vantage response did not include news feed: {payload['Information']}")
+
+    rows = _extract_alpha_vantage_news_items(normalized_tickers, payload)
     return pd.DataFrame(rows, columns=_NEWS_COLUMNS)
 
 

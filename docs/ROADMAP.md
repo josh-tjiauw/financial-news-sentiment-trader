@@ -16,7 +16,7 @@
 - [x] Add dataset builder that joins news and prices by ticker/date
 - [x] Store reproducible sample raw datasets
 - [x] Add flexible historical news CSV importer
-- [ ] Add deeper historical news provider API support
+- [x] Add deeper historical news provider API support
 
 ## Phase 3: Modeling
 

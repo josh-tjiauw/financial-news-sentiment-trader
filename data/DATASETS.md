@@ -28,6 +28,24 @@ py -m trading_sentiment.cli build-dataset --news data/raw/sample_news.csv --pric
 
 ## Recommended first historical dataset
 
+### Alpha Vantage News & Sentiment API
+
+- Why first for the class-project window: it supports bounded news requests by ticker and date, which fits an Oct-Dec 2024 portfolio demo better than Yahoo's recent-news endpoint.
+- Access path: request a free API key from Alpha Vantage, then store it outside git as `ALPHA_VANTAGE_API_KEY`.
+- Output format: the project normalizes Alpha Vantage articles into `ticker`, `published_date`, `title`, `summary`, `source`, and `url`.
+- Limits: free API keys have request limits, and the endpoint caps returned articles. Treat the result as a research sample, not a complete market-news archive.
+
+Recommended command for the Oct-Dec 2024 project window:
+
+```bash
+export ALPHA_VANTAGE_API_KEY="your-api-key"
+py -m trading_sentiment.cli fetch-alpha-vantage-news \
+  --tickers AAPL,MSFT,NVDA,TSLA,AMZN,GOOGL,META \
+  --start 2024-10-01 \
+  --end 2024-12-31 \
+  --output data/raw/news.csv
+```
+
 ### FNSPID — Financial News and Stock Price Integration Dataset
 
 - Why first: large, historical, and ticker-aligned, which fits this project better than generic market-news corpora.

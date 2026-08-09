@@ -61,6 +61,7 @@ This repo currently includes:
 - Text-cleaning utilities
 - News CSV ingestion
 - Recent Yahoo Finance news ingestion through `yfinance`
+- Historical Alpha Vantage news ingestion for bounded project windows
 - Flexible historical news CSV importer for Kaggle/manual/vendor datasets
 - Yahoo Finance price ingestion through `yfinance`
 - Dataset builder that joins news and prices by ticker/date
@@ -152,7 +153,28 @@ py -m trading_sentiment.cli fetch-news --tickers AAPL,MSFT,NVDA --max-articles-p
 
 Note: Yahoo Finance's free news endpoint is recent-news oriented. For deeper historical backtesting, this project will eventually need a historical news provider or archived dataset.
 
-### 4. Import historical news from a CSV dataset
+### 4. Fetch historical news from Alpha Vantage
+
+For a dated class-project window, use Alpha Vantage's News & Sentiment API. Keep the API key outside the repo:
+
+```bash
+export ALPHA_VANTAGE_API_KEY="your-api-key"
+```
+
+Then fetch the Oct-Dec 2024 news window:
+
+```bash
+py -m trading_sentiment.cli fetch-alpha-vantage-news --tickers AAPL,MSFT,NVDA,TSLA,AMZN,GOOGL,META --start 2024-10-01 --end 2024-12-31 --output data/raw/news.csv
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:ALPHA_VANTAGE_API_KEY = "your-api-key"
+py -m trading_sentiment.cli fetch-alpha-vantage-news --tickers AAPL,MSFT,NVDA,TSLA,AMZN,GOOGL,META --start 2024-10-01 --end 2024-12-31 --output data/raw/news.csv
+```
+
+### 5. Import historical news from a CSV dataset
 
 For large Kaggle/manual/vendor datasets, stream and normalize a filtered subset into this project's news schema:
 
@@ -178,13 +200,15 @@ For small CSVs, `import-news-csv` is also available and loads the full file at o
 
 See [`data/DATASETS.md`](data/DATASETS.md) for dataset rules, schemas, and quality checks.
 
-### 5. Fetch real historical prices
+### 6. Fetch real historical prices
 
 ```bash
-trading-sentiment fetch-prices --tickers AAPL,MSFT,NVDA --start 2024-01-01 --end 2024-03-01 --output data/raw/prices.csv
+trading-sentiment fetch-prices --tickers AAPL,MSFT,NVDA,TSLA,AMZN,GOOGL,META --start 2024-10-01 --end 2025-01-03 --output data/raw/prices.csv
 ```
 
-### 6. Build a real modeling dataset
+The price end date extends slightly into Jan 2025 so next-day labels can still be generated for late-Dec 2024 rows.
+
+### 7. Build a real modeling dataset
 
 After collecting `data/raw/news.csv` and `data/raw/prices.csv`:
 
@@ -192,7 +216,7 @@ After collecting `data/raw/news.csv` and `data/raw/prices.csv`:
 trading-sentiment build-dataset --news data/raw/news.csv --prices data/raw/prices.csv --output data/processed/modeling_dataset.csv
 ```
 
-### 7. Train the baseline ML model
+### 8. Train the baseline ML model
 
 ```bash
 trading-sentiment train-baseline --dataset data/processed/modeling_dataset.csv --metrics-output reports/baseline_metrics.json --predictions-output reports/baseline_predictions.csv --model-output models/baseline_model.joblib
@@ -212,7 +236,7 @@ This trains an explainable baseline:
 - JSON metrics with naive comparisons: majority class, stratified random, and ticker prior
 - Held-out prediction CSV artifacts
 
-### 8. Backtest baseline predictions
+### 9. Backtest baseline predictions
 
 ```bash
 trading-sentiment backtest-predictions --predictions reports/baseline_predictions.csv --summary-output reports/backtest_summary.csv --trades-output reports/backtest_trades.csv --equity-output reports/backtest_equity_curve.csv --transaction-cost 1.00 --slippage-pct 0.001

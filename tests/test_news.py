@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from trading_sentiment.news import (
+    _extract_alpha_vantage_news_items,
     _extract_yahoo_news_item,
     aggregate_daily_news,
     load_news_csv,
@@ -89,3 +90,44 @@ def test_extract_yahoo_news_item_normalizes_legacy_yfinance_shape():
     assert row["summary"] == "Cloud growth remains strong."
     assert row["source"] == "Reuters"
     assert row["url"] == "https://example.com/msft-cloud"
+
+
+def test_extract_alpha_vantage_news_items_normalizes_matching_tickers():
+    payload = {
+        "feed": [
+            {
+                "title": "Apple and Microsoft rally after earnings",
+                "summary": "Large-cap tech stocks climbed after results.",
+                "source": "Reuters",
+                "url": "https://example.com/tech-rally",
+                "time_published": "20241015T143000",
+                "ticker_sentiment": [
+                    {"ticker": "AAPL", "ticker_sentiment_score": "0.22"},
+                    {"ticker": "MSFT", "ticker_sentiment_score": "0.17"},
+                    {"ticker": "SPY", "ticker_sentiment_score": "0.05"},
+                ],
+            }
+        ]
+    }
+
+    rows = _extract_alpha_vantage_news_items(["aapl", "msft"], payload)
+
+    assert rows == [
+        {
+            "ticker": "AAPL",
+            "published_date": rows[0]["published_date"],
+            "title": "Apple and Microsoft rally after earnings",
+            "summary": "Large-cap tech stocks climbed after results.",
+            "source": "Reuters",
+            "url": "https://example.com/tech-rally",
+        },
+        {
+            "ticker": "MSFT",
+            "published_date": rows[1]["published_date"],
+            "title": "Apple and Microsoft rally after earnings",
+            "summary": "Large-cap tech stocks climbed after results.",
+            "source": "Reuters",
+            "url": "https://example.com/tech-rally",
+        },
+    ]
+    assert str(rows[0]["published_date"]) == "2024-10-15"
