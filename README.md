@@ -234,7 +234,7 @@ This trains an explainable baseline:
 - Logistic regression classifier
 - Chronological train/test split to better mimic future prediction
 - JSON metrics with naive comparisons: majority class, stratified random, and ticker prior
-- Held-out prediction CSV artifacts
+- Full-window prediction CSV artifacts with a `split` column, so the dashboard can show the full signal timeline while evaluation/backtesting remains tied to held-out rows
 
 ### 9. Backtest baseline predictions
 
@@ -264,7 +264,7 @@ The summary report includes strategy return, buy-and-hold return, excess return,
 py -m streamlit run src/trading_sentiment/app.py
 ```
 
-The dashboard shows model-vs-naive metrics, ticker filters, the processed dataset, baseline predictions, strategy summary, equity curve, and trade log. By default, it opens the committed demo artifacts:
+The dashboard shows weekly buy/sell signal timelines, latest ticker signals, held-out backtest results, model-vs-naive metrics, ticker filters, the processed dataset, equity curve, and trade log. By default, it opens the committed demo artifacts:
 
 - Modeling dataset CSV: `data/processed/demo_modeling_dataset.csv`
 - Predictions CSV: `reports/demo_baseline_predictions.csv`

@@ -78,6 +78,34 @@ def build_prediction_signal_counts(predictions: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def build_weekly_signal_timeline(predictions: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate prediction labels into one weekly signal per ticker."""
+    required_columns = {"ticker", "date", "predicted_label"}
+    if predictions.empty or not required_columns.issubset(predictions.columns):
+        return pd.DataFrame(
+            columns=["ticker", "week_start", "weekly_signal", "signal_score", "prediction_count"]
+        )
+
+    rows = predictions.copy()
+    rows["date"] = pd.to_datetime(rows["date"])
+    rows["week_start"] = rows["date"] - pd.to_timedelta(rows["date"].dt.weekday, unit="D")
+    rows["predicted_label"] = rows["predicted_label"].astype(int)
+
+    weekly = (
+        rows.groupby(["ticker", "week_start"], as_index=False)
+        .agg(
+            signal_score=("predicted_label", "mean"),
+            prediction_count=("predicted_label", "size"),
+        )
+        .sort_values(["week_start", "ticker"])
+    )
+    weekly["weekly_signal"] = weekly["signal_score"].apply(
+        lambda score: "Buy" if score > 0 else "Sell" if score < 0 else "Hold"
+    )
+    weekly["week_start"] = weekly["week_start"].dt.date.astype(str)
+    return weekly[["ticker", "week_start", "weekly_signal", "signal_score", "prediction_count"]]
+
+
 def build_return_chart(summary: pd.DataFrame) -> pd.DataFrame:
     """Shape strategy and buy/hold returns for a ticker comparison chart."""
     required_columns = {"ticker", "strategy_return", "buy_hold_return"}

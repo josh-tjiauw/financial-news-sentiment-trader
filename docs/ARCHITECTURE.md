@@ -108,8 +108,8 @@ flowchart TD
 4. Clean and combine article text into `cleaned_text`.
 5. Label each row using future price movement: `1` up, `0` neutral, `-1` down.
 6. Train the baseline model using a chronological train/test split and compare it against naive reference models.
-7. Write metrics and held-out predictions under `reports/`.
-8. Convert predicted labels into buy/hold/sell signals and backtest them per ticker with optional transaction costs and slippage.
+7. Write metrics and full-window prediction artifacts under `reports/`, with each prediction marked as train or test split.
+8. Convert predicted labels into buy/hold/sell signals, then backtest the held-out test split per ticker with optional transaction costs and slippage.
 9. Inspect datasets, predictions, and strategy results in the Streamlit dashboard.
 
 ## Design principles

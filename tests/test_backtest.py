@@ -7,6 +7,7 @@ from trading_sentiment.backtest import (
     Portfolio,
     apply_signal,
     backtest_predictions,
+    backtest_predictions_from_csv,
     calculate_max_drawdown,
     calculate_completed_trade_metrics,
     calculate_sharpe_like_return,
@@ -110,6 +111,47 @@ def test_backtest_predictions_reports_completed_trade_win_loss_metrics():
     assert apple["worst_completed_trade_return"] == pytest.approx(-0.1)
     assert apple["total_completed_trade_pnl"] == pytest.approx(-12)
     assert trades["completed_trade_return"].dropna().tolist() == pytest.approx([0.1, -0.1])
+
+
+def test_backtest_predictions_from_csv_uses_test_split_only(tmp_path):
+    predictions_csv = tmp_path / "predictions.csv"
+    summary_csv = tmp_path / "summary.csv"
+    pd.DataFrame(
+        [
+            {
+                "ticker": "AAPL",
+                "date": "2024-01-02",
+                "close": 100,
+                "predicted_label": 1,
+                "split": "train",
+            },
+            {
+                "ticker": "AAPL",
+                "date": "2024-01-03",
+                "close": 110,
+                "predicted_label": 1,
+                "split": "test",
+            },
+            {
+                "ticker": "AAPL",
+                "date": "2024-01-04",
+                "close": 121,
+                "predicted_label": -1,
+                "split": "test",
+            },
+        ]
+    ).to_csv(predictions_csv, index=False)
+
+    summary, trades, equity_curve = backtest_predictions_from_csv(
+        predictions_csv=predictions_csv,
+        summary_output=summary_csv,
+        initial_cash=1100,
+    )
+
+    assert summary.iloc[0]["start_date"] == "2024-01-03"
+    assert summary.iloc[0]["strategy_return"] == pytest.approx(0.1)
+    assert len(trades) == 2
+    assert len(equity_curve) == 2
 
 
 def test_calculate_completed_trade_metrics_includes_transaction_costs():

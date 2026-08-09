@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
@@ -12,6 +13,7 @@ from matplotlib.ticker import PercentFormatter
 from trading_sentiment.backtest import backtest_predictions
 from trading_sentiment.dashboard import (
     build_metric_comparison,
+    build_weekly_signal_timeline,
     collect_tickers,
     filter_by_tickers,
 )
@@ -70,6 +72,52 @@ def show_excess_return_chart(summary: pd.DataFrame) -> None:
     ax.xaxis.set_major_formatter(PercentFormatter(1.0))
     ax.grid(axis="x", alpha=0.25)
     ax.bar_label(bars, labels=[f"{value:.1%}" for value in rows["excess_return"]], padding=4)
+    fig.tight_layout()
+    st.pyplot(fig, clear_figure=True)
+
+
+def show_weekly_signal_timeline_chart(weekly_signals: pd.DataFrame) -> None:
+    if weekly_signals.empty:
+        return
+
+    rows = weekly_signals.copy()
+    rows["week_start"] = pd.to_datetime(rows["week_start"])
+    tickers = sorted(rows["ticker"].astype(str).unique())
+    ticker_positions = {ticker: index for index, ticker in enumerate(tickers)}
+    rows["ticker_position"] = rows["ticker"].map(ticker_positions)
+
+    styles = {
+        "Buy": {"color": "#15803d", "marker": "^"},
+        "Hold": {"color": "#64748b", "marker": "o"},
+        "Sell": {"color": "#c2410c", "marker": "v"},
+    }
+
+    fig_height = max(4, min(8, 1.0 + len(tickers) * 0.55))
+    fig, ax = plt.subplots(figsize=(10, fig_height))
+    for signal, style in styles.items():
+        signal_rows = rows[rows["weekly_signal"] == signal]
+        if signal_rows.empty:
+            continue
+        ax.scatter(
+            signal_rows["week_start"],
+            signal_rows["ticker_position"],
+            s=80 + (signal_rows["prediction_count"] * 25),
+            c=style["color"],
+            marker=style["marker"],
+            label=signal,
+            alpha=0.9,
+            edgecolors="white",
+            linewidths=0.8,
+        )
+
+    ax.set_yticks(list(ticker_positions.values()))
+    ax.set_yticklabels(tickers)
+    ax.set_xlabel("Week of news")
+    ax.set_ylabel("")
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
+    ax.grid(axis="x", alpha=0.25)
+    ax.legend(title="Weekly signal", loc="upper center", ncols=3, bbox_to_anchor=(0.5, 1.16))
+    fig.autofmt_xdate(rotation=30, ha="right")
     fig.tight_layout()
     st.pyplot(fig, clear_figure=True)
 
@@ -213,21 +261,25 @@ if filtered_predictions is not None:
     signal_cols[2].metric("Latest date", str(filtered_predictions["date"].max()))
 
     latest_signals = build_latest_signals(filtered_predictions)
+    weekly_signals = build_weekly_signal_timeline(filtered_predictions)
+    if not weekly_signals.empty:
+        st.subheader("Weekly Buy/Sell Signal Timeline")
+        show_weekly_signal_timeline_chart(weekly_signals)
+        st.dataframe(weekly_signals, width="stretch")
+
     st.subheader("Latest Signal by Ticker")
     st.dataframe(latest_signals, width="stretch")
-
-    signal_counts = build_prediction_signal_counts(filtered_predictions)
-    if not signal_counts.empty:
-        st.subheader("Signal History")
-        st.bar_chart(signal_counts, x="ticker", y="count", color="signal")
 else:
     st.info("No predictions found yet. Run `train-baseline` first.")
 
 st.header("Backtest")
 if filtered_predictions is not None:
     try:
+        backtest_input = filtered_predictions
+        if "split" in filtered_predictions.columns:
+            backtest_input = filtered_predictions[filtered_predictions["split"] == "test"].copy()
         summary, trades, equity_curve = backtest_predictions(
-            filtered_predictions,
+            backtest_input,
             initial_cash=initial_cash,
             transaction_cost=transaction_cost,
             slippage_pct=slippage_pct,

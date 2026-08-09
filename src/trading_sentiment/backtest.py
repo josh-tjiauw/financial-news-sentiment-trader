@@ -294,6 +294,8 @@ def backtest_predictions_from_csv(
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Load prediction CSV artifacts, backtest them, and write report CSVs."""
     predictions = pd.read_csv(predictions_csv)
+    if "split" in predictions.columns:
+        predictions = predictions[predictions["split"] == "test"].copy()
     summary, trades, equity_curve = backtest_predictions(
         predictions,
         initial_cash=initial_cash,

@@ -11,6 +11,7 @@ decisions.
 - Modeling rows: 91
 - Train rows: 68
 - Test rows: 23
+- Prediction rows: 91, with `split` marking train/test rows
 - Label classes: `-1`, `1`
 
 ## Model Comparison

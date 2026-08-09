@@ -1,24 +1,92 @@
-ticker,date,cleaned_text,close,future_close,future_return,label,predicted_label,prediction_confidence
-NVDA,2024-01-16,nvidia data center demand expands ai accelerator demand remained strong across cloud enterprise customers,345,355.0,0.0289855072463768,1,1,0.6525289305732342
-TSLA,2024-01-16,tesla margin pressure persists discounting recalls competition weighed investor confidence,217,221.0,0.0184331797235023,1,-1,0.7323710701520261
-AAPL,2024-01-17,apple valuation hardware concerns weigh investors reacted cautious supplier checks limited nearterm upside,107,110.0,0.02803738317757,1,-1,0.7076217228869692
-AMZN,2024-01-17,amazon aws rebound offsets retail caution cloud checks improved while consumer spending concerns stayed visible,162,161.0,-0.0061728395061728,-1,1,0.6140646780788835
-GOOGL,2024-01-17,alphabet ad recovery gains traction agency checks suggested healthier search youtube budgets,149,151.0,0.0134228187919463,1,1,0.7080577172151238
-META,2024-01-17,meta engagement ad tools strengthen advertiser conversion trends cost discipline improved sentiment,101,100.0,-0.0099009900990099,-1,1,0.7160296109206815
-MSFT,2024-01-17,microsoft cloud ai demand strengthens enterprise cloud checks pointed durable spending improving software momentum,212,214.0,0.0094339622641509,1,1,0.7454838492382311
-NVDA,2024-01-17,nvidia data center demand expands ai accelerator demand remained strong across cloud enterprise customers,355,365.0,0.028169014084507,1,1,0.6525289305732342
-TSLA,2024-01-17,tesla margin pressure persists discounting recalls competition weighed investor confidence,221,216.0,-0.0226244343891402,-1,-1,0.7323710701520261
-AAPL,2024-01-18,apple services ai demand improve analysts cited resilient demand stronger upgradecycle expectations,110,112.0,0.0181818181818181,1,1,0.7138438489922245
-AMZN,2024-01-18,amazon consumer demand concerns rise retail spending worries valuation concerns pressured sentiment,161,164.0,0.0186335403726708,1,-1,0.594346301535899
-GOOGL,2024-01-18,alphabet ad recovery offsets legal pressure search trends improved but regulatory concerns kept outlook mixed,151,153.0,0.0132450331125827,1,1,0.6341639997678044
-META,2024-01-18,meta engagement ad tools strengthen advertiser conversion trends cost discipline improved sentiment,100,103.0,0.03,1,1,0.7160296109206815
-MSFT,2024-01-18,microsoft guidance caution pressures shares some customers continued optimizing cloud spend slowing expansion,214,213.0,-0.0046728971962616,-1,-1,0.6043083854003106
-NVDA,2024-01-18,nvidia export limits pressure sentiment investors weighed regulatory limits supplychain uncertainty,365,360.0,-0.0136986301369863,-1,-1,0.5572482087188325
-TSLA,2024-01-18,tesla order rates recover pricing actions energy storage growth helped demand sentiment,216,220.0,0.0185185185185185,1,1,0.5888257894315733
-AAPL,2024-01-19,apple valuation hardware concerns weigh investors reacted cautious supplier checks limited nearterm upside,112,111.0,-0.0089285714285714,-1,-1,0.7076217228869692
-AMZN,2024-01-19,amazon margins aws demand improve retail efficiency cloud pipeline checks supported better outlook,164,166.0,0.0121951219512195,1,1,0.6640340805230173
-GOOGL,2024-01-19,alphabet ad recovery gains traction agency checks suggested healthier search youtube budgets,153,152.0,-0.0065359477124183,-1,1,0.7080577172151238
-META,2024-01-19,meta engagement ad tools strengthen advertiser conversion trends cost discipline improved sentiment,103,104.0,0.0097087378640776,1,1,0.7160296109206815
-MSFT,2024-01-19,microsoft cloud ai demand strengthens enterprise cloud checks pointed durable spending improving software momentum,213,216.0,0.0140845070422535,1,1,0.7454838492382311
-NVDA,2024-01-19,nvidia demand strong but export risk lingers data center demand stayed healthy while investors watched regulatory pressure,360,372.0,0.0333333333333333,1,-1,0.5785663705111938
-TSLA,2024-01-19,tesla order rates recover pricing actions energy storage growth helped demand sentiment,220,224.0,0.0181818181818181,1,1,0.5888257894315733
+ticker,date,cleaned_text,close,future_close,future_return,label,split,predicted_label,prediction_confidence
+AAPL,2024-01-02,apple outlook mixed ai optimism meets valuation concern positive product commentary offset cautious hardware valuation checks,100,102.0,0.02,1,train,1,0.6554143441348289
+AMZN,2024-01-02,amazon margins aws demand improve retail efficiency cloud pipeline checks supported better outlook,150,151.0,0.0066666666666666,1,train,1,0.6640340805230173
+GOOGL,2024-01-02,alphabet regulatory ad risks persist legal uncertainty cautious advertiser budgets weighed expectations,140,139.0,-0.0071428571428571,-1,train,-1,0.6574159550149297
+META,2024-01-02,meta spending concerns return investors questioned ai infrastructure costs margin risk,90,92.0,0.0222222222222222,1,train,-1,0.6155924449944661
+MSFT,2024-01-02,microsoft cloud ai demand strengthens enterprise cloud checks pointed durable spending improving software momentum,200,201.0,0.005,1,train,1,0.7454838492382311
+NVDA,2024-01-02,nvidia data center demand expands ai accelerator demand remained strong across cloud enterprise customers,300,310.0,0.0333333333333333,1,train,1,0.6525289305732342
+TSLA,2024-01-02,tesla margin pressure persists discounting recalls competition weighed investor confidence,220,214.0,-0.0272727272727272,-1,train,-1,0.7323710701520261
+AAPL,2024-01-03,apple valuation hardware concerns weigh investors reacted cautious supplier checks limited nearterm upside,102,101.0,-0.0098039215686274,-1,train,-1,0.7076217228869692
+AMZN,2024-01-03,amazon margins aws demand improve retail efficiency cloud pipeline checks supported better outlook,151,150.0,-0.0066225165562913,-1,train,1,0.6640340805230173
+GOOGL,2024-01-03,alphabet ad recovery gains traction agency checks suggested healthier search youtube budgets,139,141.0,0.014388489208633,1,train,1,0.7080577172151238
+META,2024-01-03,meta spending concerns return investors questioned ai infrastructure costs margin risk,92,91.0,-0.0108695652173913,-1,train,-1,0.6155924449944661
+MSFT,2024-01-03,microsoft cloud ai demand strengthens enterprise cloud checks pointed durable spending improving software momentum,201,203.0,0.0099502487562189,1,train,1,0.7454838492382311
+NVDA,2024-01-03,nvidia data center demand expands ai accelerator demand remained strong across cloud enterprise customers,310,318.0,0.0258064516129032,1,train,1,0.6525289305732342
+TSLA,2024-01-03,tesla demand improves while margins remain pressured order rates recovered but investors continued watching price cuts,214,218.0,0.0186915887850467,1,train,1,0.6599974415957934
+AAPL,2024-01-04,apple services ai demand improve analysts cited resilient demand stronger upgradecycle expectations,101,104.0,0.0297029702970297,1,train,1,0.7138438489922245
+AMZN,2024-01-04,amazon margins aws demand improve retail efficiency cloud pipeline checks supported better outlook,150,153.0,0.02,1,train,1,0.6640340805230173
+GOOGL,2024-01-04,alphabet regulatory ad risks persist legal uncertainty cautious advertiser budgets weighed expectations,141,143.0,0.0141843971631205,1,train,-1,0.6574159550149297
+META,2024-01-04,meta engagement improves spending worries linger ad tools performed well but ai infrastructure cost concerns remained,91,93.0,0.0219780219780219,1,train,1,0.674483406673804
+MSFT,2024-01-04,microsoft guidance caution pressures shares some customers continued optimizing cloud spend slowing expansion,203,202.0,-0.0049261083743842,-1,train,-1,0.6043083854003106
+NVDA,2024-01-04,nvidia export limits pressure sentiment investors weighed regulatory limits supplychain uncertainty,318,315.0,-0.0094339622641509,-1,train,-1,0.5572482087188325
+TSLA,2024-01-04,tesla margin pressure persists discounting recalls competition weighed investor confidence,218,212.0,-0.0275229357798165,-1,train,-1,0.7323710701520261
+AAPL,2024-01-05,apple valuation hardware concerns weigh investors reacted cautious supplier checks limited nearterm upside,104,103.0,-0.0096153846153846,-1,train,-1,0.7076217228869692
+AMZN,2024-01-05,amazon aws rebound offsets retail caution cloud checks improved while consumer spending concerns stayed visible,153,155.0,0.0130718954248366,1,train,1,0.6140646780788835
+GOOGL,2024-01-05,alphabet regulatory ad risks persist legal uncertainty cautious advertiser budgets weighed expectations,143,142.0,-0.0069930069930069,-1,train,-1,0.6574159550149297
+META,2024-01-05,meta engagement ad tools strengthen advertiser conversion trends cost discipline improved sentiment,93,95.0,0.021505376344086,1,train,1,0.7160296109206815
+MSFT,2024-01-05,microsoft cloud ai demand strengthens enterprise cloud checks pointed durable spending improving software momentum,202,205.0,0.0148514851485148,1,train,1,0.7454838492382311
+NVDA,2024-01-05,nvidia export limits pressure sentiment investors weighed regulatory limits supplychain uncertainty,315,325.0,0.0317460317460317,1,train,-1,0.5572482087188325
+TSLA,2024-01-05,tesla order rates recover pricing actions energy storage growth helped demand sentiment,212,216.0,0.0188679245283018,1,train,1,0.5888257894315733
+AAPL,2024-01-08,apple services ai demand improve analysts cited resilient demand stronger upgradecycle expectations,103,105.0,0.0194174757281553,1,train,1,0.7138438489922245
+AMZN,2024-01-08,amazon consumer demand concerns rise retail spending worries valuation concerns pressured sentiment,155,154.0,-0.0064516129032258,-1,train,-1,0.594346301535899
+GOOGL,2024-01-08,alphabet ad recovery offsets legal pressure search trends improved but regulatory concerns kept outlook mixed,142,144.0,0.0140845070422535,1,train,1,0.6341639997678044
+META,2024-01-08,meta spending concerns return investors questioned ai infrastructure costs margin risk,95,94.0,-0.0105263157894736,-1,train,-1,0.6155924449944661
+MSFT,2024-01-08,microsoft guidance caution pressures shares some customers continued optimizing cloud spend slowing expansion,205,207.0,0.0097560975609756,1,train,-1,0.6043083854003106
+NVDA,2024-01-08,nvidia data center demand expands ai accelerator demand remained strong across cloud enterprise customers,325,332.0,0.0215384615384615,1,train,1,0.6525289305732342
+TSLA,2024-01-08,tesla order rates recover pricing actions energy storage growth helped demand sentiment,216,210.0,-0.0277777777777777,-1,train,1,0.5888257894315733
+AAPL,2024-01-09,apple valuation hardware concerns weigh investors reacted cautious supplier checks limited nearterm upside,105,107.0,0.019047619047619,1,train,-1,0.7076217228869692
+AMZN,2024-01-09,amazon margins aws demand improve retail efficiency cloud pipeline checks supported better outlook,154,156.0,0.0129870129870129,1,train,1,0.6640340805230173
+GOOGL,2024-01-09,alphabet ad recovery gains traction agency checks suggested healthier search youtube budgets,144,146.0,0.0138888888888888,1,train,1,0.7080577172151238
+META,2024-01-09,meta spending concerns return investors questioned ai infrastructure costs margin risk,94,97.0,0.0319148936170212,1,train,-1,0.6155924449944661
+MSFT,2024-01-09,microsoft guidance caution pressures shares some customers continued optimizing cloud spend slowing expansion,207,206.0,-0.0048309178743961,-1,train,-1,0.6043083854003106
+NVDA,2024-01-09,nvidia demand strong but export risk lingers data center demand stayed healthy while investors watched regulatory pressure,332,328.0,-0.0120481927710843,-1,train,-1,0.5785663705111938
+TSLA,2024-01-09,tesla order rates recover pricing actions energy storage growth helped demand sentiment,210,215.0,0.0238095238095238,1,train,1,0.5888257894315733
+AAPL,2024-01-10,apple valuation hardware concerns weigh investors reacted cautious supplier checks limited nearterm upside,107,106.0,-0.0093457943925233,-1,train,-1,0.7076217228869692
+AMZN,2024-01-10,amazon consumer demand concerns rise retail spending worries valuation concerns pressured sentiment,156,159.0,0.0192307692307692,1,train,-1,0.594346301535899
+GOOGL,2024-01-10,alphabet regulatory ad risks persist legal uncertainty cautious advertiser budgets weighed expectations,146,145.0,-0.0068493150684931,-1,train,-1,0.6574159550149297
+META,2024-01-10,meta engagement ad tools strengthen advertiser conversion trends cost discipline improved sentiment,97,98.0,0.0103092783505154,1,train,1,0.7160296109206815
+MSFT,2024-01-10,microsoft ai optimism balanced cloud optimization ai demand improved while some customers remained careful cloud budgets,206,208.0,0.0097087378640776,1,train,1,0.6566610009951965
+NVDA,2024-01-10,nvidia data center demand expands ai accelerator demand remained strong across cloud enterprise customers,328,340.0,0.0365853658536585,1,train,1,0.6525289305732342
+TSLA,2024-01-10,tesla order rates recover pricing actions energy storage growth helped demand sentiment,215,219.0,0.0186046511627906,1,train,1,0.5888257894315733
+AAPL,2024-01-11,apple outlook mixed ai optimism meets valuation concern positive product commentary offset cautious hardware valuation checks,106,108.0,0.0188679245283018,1,train,1,0.6554143441348289
+AMZN,2024-01-11,amazon consumer demand concerns rise retail spending worries valuation concerns pressured sentiment,159,158.0,-0.0062893081761006,-1,train,-1,0.594346301535899
+GOOGL,2024-01-11,alphabet regulatory ad risks persist legal uncertainty cautious advertiser budgets weighed expectations,145,147.0,0.0137931034482758,1,train,-1,0.6574159550149297
+META,2024-01-11,meta spending concerns return investors questioned ai infrastructure costs margin risk,98,96.0,-0.0204081632653061,-1,train,-1,0.6155924449944661
+MSFT,2024-01-11,microsoft cloud ai demand strengthens enterprise cloud checks pointed durable spending improving software momentum,208,211.0,0.0144230769230769,1,train,1,0.7454838492382311
+NVDA,2024-01-11,nvidia data center demand expands ai accelerator demand remained strong across cloud enterprise customers,340,350.0,0.0294117647058823,1,train,1,0.6525289305732342
+TSLA,2024-01-11,tesla margin pressure persists discounting recalls competition weighed investor confidence,219,213.0,-0.0273972602739726,-1,train,-1,0.7323710701520261
+AAPL,2024-01-12,apple services ai demand improve analysts cited resilient demand stronger upgradecycle expectations,108,109.0,0.0092592592592592,1,train,1,0.7138438489922245
+AMZN,2024-01-12,amazon margins aws demand improve retail efficiency cloud pipeline checks supported better outlook,158,160.0,0.0126582278481012,1,train,1,0.6640340805230173
+GOOGL,2024-01-12,alphabet ad recovery gains traction agency checks suggested healthier search youtube budgets,147,150.0,0.0204081632653061,1,train,1,0.7080577172151238
+META,2024-01-12,meta engagement ad tools strengthen advertiser conversion trends cost discipline improved sentiment,96,99.0,0.03125,1,train,1,0.7160296109206815
+MSFT,2024-01-12,microsoft guidance caution pressures shares some customers continued optimizing cloud spend slowing expansion,211,210.0,-0.0047393364928909,-1,train,-1,0.6043083854003106
+NVDA,2024-01-12,nvidia data center demand expands ai accelerator demand remained strong across cloud enterprise customers,350,345.0,-0.0142857142857142,-1,train,1,0.6525289305732342
+TSLA,2024-01-12,tesla demand improves while margins remain pressured order rates recovered but investors continued watching price cuts,213,217.0,0.0187793427230046,1,train,1,0.6599974415957934
+AAPL,2024-01-16,apple valuation hardware concerns weigh investors reacted cautious supplier checks limited nearterm upside,109,107.0,-0.018348623853211,-1,train,-1,0.7076217228869692
+AMZN,2024-01-16,amazon margins aws demand improve retail efficiency cloud pipeline checks supported better outlook,160,162.0,0.0125,1,train,1,0.6640340805230173
+GOOGL,2024-01-16,alphabet regulatory ad risks persist legal uncertainty cautious advertiser budgets weighed expectations,150,149.0,-0.0066666666666666,-1,train,-1,0.6574159550149297
+META,2024-01-16,meta engagement improves spending worries linger ad tools performed well but ai infrastructure cost concerns remained,99,101.0,0.0202020202020202,1,train,1,0.674483406673804
+MSFT,2024-01-16,microsoft guidance caution pressures shares some customers continued optimizing cloud spend slowing expansion,210,212.0,0.0095238095238095,1,train,-1,0.6043083854003106
+NVDA,2024-01-16,nvidia data center demand expands ai accelerator demand remained strong across cloud enterprise customers,345,355.0,0.0289855072463768,1,test,1,0.6525289305732342
+TSLA,2024-01-16,tesla margin pressure persists discounting recalls competition weighed investor confidence,217,221.0,0.0184331797235023,1,test,-1,0.7323710701520261
+AAPL,2024-01-17,apple valuation hardware concerns weigh investors reacted cautious supplier checks limited nearterm upside,107,110.0,0.02803738317757,1,test,-1,0.7076217228869692
+AMZN,2024-01-17,amazon aws rebound offsets retail caution cloud checks improved while consumer spending concerns stayed visible,162,161.0,-0.0061728395061728,-1,test,1,0.6140646780788835
+GOOGL,2024-01-17,alphabet ad recovery gains traction agency checks suggested healthier search youtube budgets,149,151.0,0.0134228187919463,1,test,1,0.7080577172151238
+META,2024-01-17,meta engagement ad tools strengthen advertiser conversion trends cost discipline improved sentiment,101,100.0,-0.0099009900990099,-1,test,1,0.7160296109206815
+MSFT,2024-01-17,microsoft cloud ai demand strengthens enterprise cloud checks pointed durable spending improving software momentum,212,214.0,0.0094339622641509,1,test,1,0.7454838492382311
+NVDA,2024-01-17,nvidia data center demand expands ai accelerator demand remained strong across cloud enterprise customers,355,365.0,0.028169014084507,1,test,1,0.6525289305732342
+TSLA,2024-01-17,tesla margin pressure persists discounting recalls competition weighed investor confidence,221,216.0,-0.0226244343891402,-1,test,-1,0.7323710701520261
+AAPL,2024-01-18,apple services ai demand improve analysts cited resilient demand stronger upgradecycle expectations,110,112.0,0.0181818181818181,1,test,1,0.7138438489922245
+AMZN,2024-01-18,amazon consumer demand concerns rise retail spending worries valuation concerns pressured sentiment,161,164.0,0.0186335403726708,1,test,-1,0.594346301535899
+GOOGL,2024-01-18,alphabet ad recovery offsets legal pressure search trends improved but regulatory concerns kept outlook mixed,151,153.0,0.0132450331125827,1,test,1,0.6341639997678044
+META,2024-01-18,meta engagement ad tools strengthen advertiser conversion trends cost discipline improved sentiment,100,103.0,0.03,1,test,1,0.7160296109206815
+MSFT,2024-01-18,microsoft guidance caution pressures shares some customers continued optimizing cloud spend slowing expansion,214,213.0,-0.0046728971962616,-1,test,-1,0.6043083854003106
+NVDA,2024-01-18,nvidia export limits pressure sentiment investors weighed regulatory limits supplychain uncertainty,365,360.0,-0.0136986301369863,-1,test,-1,0.5572482087188325
+TSLA,2024-01-18,tesla order rates recover pricing actions energy storage growth helped demand sentiment,216,220.0,0.0185185185185185,1,test,1,0.5888257894315733
+AAPL,2024-01-19,apple valuation hardware concerns weigh investors reacted cautious supplier checks limited nearterm upside,112,111.0,-0.0089285714285714,-1,test,-1,0.7076217228869692
+AMZN,2024-01-19,amazon margins aws demand improve retail efficiency cloud pipeline checks supported better outlook,164,166.0,0.0121951219512195,1,test,1,0.6640340805230173
+GOOGL,2024-01-19,alphabet ad recovery gains traction agency checks suggested healthier search youtube budgets,153,152.0,-0.0065359477124183,-1,test,1,0.7080577172151238
+META,2024-01-19,meta engagement ad tools strengthen advertiser conversion trends cost discipline improved sentiment,103,104.0,0.0097087378640776,1,test,1,0.7160296109206815
+MSFT,2024-01-19,microsoft cloud ai demand strengthens enterprise cloud checks pointed durable spending improving software momentum,213,216.0,0.0140845070422535,1,test,1,0.7454838492382311
+NVDA,2024-01-19,nvidia demand strong but export risk lingers data center demand stayed healthy while investors watched regulatory pressure,360,372.0,0.0333333333333333,1,test,-1,0.5785663705111938
+TSLA,2024-01-19,tesla order rates recover pricing actions energy storage growth helped demand sentiment,220,224.0,0.0181818181818181,1,test,1,0.5888257894315733

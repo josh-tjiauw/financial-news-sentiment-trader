@@ -102,8 +102,18 @@ def test_train_baseline_model_returns_metrics_and_predictions():
         "future_close",
         "future_return",
         "label",
+        "split",
         "predicted_label",
     }
+    assert len(result.predictions) == len(_sample_dataset())
+    assert result.predictions["split"].tolist() == [
+        "train",
+        "train",
+        "train",
+        "train",
+        "test",
+        "test",
+    ]
 
 
 def test_evaluate_naive_baselines_scores_simple_reference_models():

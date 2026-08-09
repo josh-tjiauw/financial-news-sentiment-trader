@@ -6,6 +6,7 @@ from trading_sentiment.dashboard import (
     build_metric_score_chart,
     build_prediction_signal_counts,
     build_return_chart,
+    build_weekly_signal_timeline,
     collect_tickers,
     filter_by_tickers,
 )
@@ -81,6 +82,43 @@ def test_build_prediction_signal_counts_groups_by_ticker_and_signal():
         {"ticker": "AAPL", "signal": "Buy", "count": 1},
         {"ticker": "AAPL", "signal": "Sell", "count": 1},
         {"ticker": "MSFT", "signal": "Buy", "count": 1},
+    ]
+
+
+def test_build_weekly_signal_timeline_aggregates_by_ticker_week():
+    predictions = pd.DataFrame(
+        [
+            {"ticker": "AAPL", "date": "2024-10-01", "predicted_label": 1},
+            {"ticker": "AAPL", "date": "2024-10-03", "predicted_label": -1},
+            {"ticker": "AAPL", "date": "2024-10-08", "predicted_label": -1},
+            {"ticker": "MSFT", "date": "2024-10-02", "predicted_label": 1},
+        ]
+    )
+
+    timeline = build_weekly_signal_timeline(predictions)
+
+    assert timeline.to_dict("records") == [
+        {
+            "ticker": "AAPL",
+            "week_start": "2024-09-30",
+            "weekly_signal": "Hold",
+            "signal_score": 0.0,
+            "prediction_count": 2,
+        },
+        {
+            "ticker": "MSFT",
+            "week_start": "2024-09-30",
+            "weekly_signal": "Buy",
+            "signal_score": 1.0,
+            "prediction_count": 1,
+        },
+        {
+            "ticker": "AAPL",
+            "week_start": "2024-10-07",
+            "weekly_signal": "Sell",
+            "signal_score": -1.0,
+            "prediction_count": 1,
+        },
     ]
 
 

@@ -166,10 +166,18 @@ def train_baseline_model(
     model = build_baseline_pipeline(max_features=max_features)
     model.fit(train["cleaned_text"], train["label"])
 
-    predicted_labels = model.predict(test["cleaned_text"])
-    prediction_scores = None
+    test_predicted_labels = model.predict(test["cleaned_text"])
+    all_rows = pd.concat(
+        [
+            train.assign(split="train"),
+            test.assign(split="test"),
+        ],
+        ignore_index=True,
+    ).sort_values(["date", "ticker"])
+    all_predicted_labels = model.predict(all_rows["cleaned_text"])
+    all_prediction_scores = None
     if hasattr(model.named_steps["classifier"], "predict_proba"):
-        prediction_scores = model.predict_proba(test["cleaned_text"]).max(axis=1)
+        all_prediction_scores = model.predict_proba(all_rows["cleaned_text"]).max(axis=1)
 
     prediction_columns = [
         column
@@ -181,13 +189,14 @@ def train_baseline_model(
             "future_close",
             "future_return",
             "label",
+            "split",
         ]
-        if column in test.columns
+        if column in all_rows.columns
     ]
-    predictions = test[prediction_columns].copy()
-    predictions["predicted_label"] = predicted_labels
-    if prediction_scores is not None:
-        predictions["prediction_confidence"] = prediction_scores
+    predictions = all_rows[prediction_columns].copy()
+    predictions["predicted_label"] = all_predicted_labels
+    if all_prediction_scores is not None:
+        predictions["prediction_confidence"] = all_prediction_scores
 
     labels = [int(label) for label in sorted(dataset["label"].unique().tolist())]
     metrics: dict[str, Any] = {
@@ -198,14 +207,20 @@ def train_baseline_model(
         "test_size": test_size,
         "max_features": max_features,
         "labels": labels,
-        "accuracy": float(accuracy_score(test["label"], predicted_labels)),
+        "accuracy": float(accuracy_score(test["label"], test_predicted_labels)),
         "macro_f1": float(
-            f1_score(test["label"], predicted_labels, labels=labels, average="macro", zero_division=0)
+            f1_score(
+                test["label"],
+                test_predicted_labels,
+                labels=labels,
+                average="macro",
+                zero_division=0,
+            )
         ),
         "naive_baselines": evaluate_naive_baselines(train, test, labels),
         "classification_report": classification_report(
             test["label"],
-            predicted_labels,
+            test_predicted_labels,
             labels=labels,
             output_dict=True,
             zero_division=0,
