@@ -12,7 +12,7 @@ Live demo: https://financial-news-sentiment-trader.streamlit.app/
 
 ![Financial News Sentiment Trader dashboard](docs/images/dashboard-demo.png)
 
-The app defaults to the committed multi-ticker demo artifacts, so it can be opened locally or deployed without first running the data pipeline. The demo data is intentionally compact and includes mixed-signal headlines, so the displayed metrics are illustrative rather than evidence of real trading performance.
+The app defaults to committed Alpha Vantage artifacts for Sep 30-Dec 16, 2024, so it can be opened locally or deployed without first running the data pipeline. The displayed metrics are illustrative research outputs, not evidence of real trading performance.
 
 ## Walkthrough
 
@@ -36,7 +36,7 @@ Key technical decisions:
 
 Known limitations:
 
-- The committed demo dataset is intentionally compact, educational, and partially ambiguous.
+- The committed Alpha Vantage sample is a bounded educational dataset, not a complete market-news archive.
 - Yahoo Finance news is recent-news oriented, so serious historical backtesting needs a deeper news archive.
 - The baseline model is intentionally simple; FinBERT or another finance-specific model is a planned improvement.
 - This is an educational research tool, not financial advice or a production trading system.
@@ -129,7 +129,7 @@ This creates a processed CSV with:
 - future return
 - movement label: `1`, `0`, or `-1`
 
-For a richer local dashboard demo, use the committed multi-ticker demo files:
+For the older compact local dashboard demo, use the committed multi-ticker demo files:
 
 ```bash
 py -m trading_sentiment.cli build-dataset --news data/raw/demo_news.csv --prices data/raw/demo_prices.csv --output data/processed/demo_modeling_dataset.csv
@@ -264,11 +264,11 @@ The summary report includes strategy return, buy-and-hold return, excess return,
 py -m streamlit run src/trading_sentiment/app.py
 ```
 
-The dashboard shows weekly buy/sell signal timelines, latest ticker signals, held-out backtest results, model-vs-naive metrics, ticker filters, the processed dataset, equity curve, and trade log. By default, it opens the committed demo artifacts:
+The dashboard shows weekly buy/sell signal timelines, latest ticker signals, held-out backtest results, model-vs-naive metrics, ticker filters, the processed dataset, equity curve, and trade log. By default, it opens the committed Alpha Vantage artifacts:
 
-- Modeling dataset CSV: `data/processed/demo_modeling_dataset.csv`
-- Predictions CSV: `reports/demo_baseline_predictions.csv`
-- Metrics JSON: `reports/demo_baseline_metrics.json`
+- Modeling dataset CSV: `data/processed/alpha_vantage_modeling_dataset.csv`
+- Predictions CSV: `reports/alpha_vantage_baseline_predictions.csv`
+- Metrics JSON: `reports/alpha_vantage_baseline_metrics.json`
 
 ## Deployment
 

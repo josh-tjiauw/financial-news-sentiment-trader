@@ -28,9 +28,15 @@ data/app/*
 !data/raw/demo_news.csv
 !data/raw/demo_prices.csv
 !data/processed/demo_modeling_dataset.csv
+!data/processed/alpha_vantage_modeling_dataset.csv
 !reports/demo_baseline_metrics.json
 !reports/demo_baseline_predictions.csv
 !reports/demo_backtest_summary.csv
 !reports/demo_backtest_trades.csv
 !reports/demo_backtest_equity_curve.csv
+!reports/alpha_vantage_baseline_metrics.json
+!reports/alpha_vantage_baseline_predictions.csv
+!reports/alpha_vantage_backtest_summary.csv
+!reports/alpha_vantage_backtest_trades.csv
+!reports/alpha_vantage_backtest_equity_curve.csv
 !reports/SAMPLE_RESULTS.md

@@ -21,9 +21,9 @@ from trading_sentiment.dashboard import (
 
 st.set_page_config(page_title="Financial News Sentiment Trader", layout="wide")
 
-DEFAULT_DATASET = Path("data/processed/demo_modeling_dataset.csv")
-DEFAULT_PREDICTIONS = Path("reports/demo_baseline_predictions.csv")
-DEFAULT_METRICS = Path("reports/demo_baseline_metrics.json")
+DEFAULT_DATASET = Path("data/processed/alpha_vantage_modeling_dataset.csv")
+DEFAULT_PREDICTIONS = Path("reports/alpha_vantage_baseline_predictions.csv")
+DEFAULT_METRICS = Path("reports/alpha_vantage_baseline_metrics.json")
 SIGNAL_LABELS = {-1: "Sell", 0: "Hold", 1: "Buy"}
 
 
@@ -209,13 +209,13 @@ def build_average_equity_curve(equity_curve: pd.DataFrame) -> pd.DataFrame:
 st.title("Financial News Sentiment Trader")
 st.caption("News-driven stock movement modeling and strategy backtesting")
 st.info(
-    "The included demo is intentionally compact and includes mixed-signal headlines. "
-    "Use it to inspect the workflow, not to judge real trading performance."
+    "The included Alpha Vantage sample covers Sep 30-Dec 16, 2024. "
+    "Use it to inspect the workflow, not as financial advice or proof of trading performance."
 )
 
 with st.sidebar:
     st.header("Dataset")
-    data_source = st.selectbox("Source", ["Included demo", "Custom files"])
+    data_source = st.selectbox("Source", ["Alpha Vantage sample", "Custom files"])
 
     if data_source == "Custom files":
         with st.expander("File paths", expanded=True):

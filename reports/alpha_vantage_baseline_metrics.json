@@ -1,0 +1,66 @@
+{
+  "model": "tfidf_logistic_regression",
+  "row_count": 355,
+  "train_row_count": 266,
+  "test_row_count": 89,
+  "test_size": 0.25,
+  "max_features": 5000,
+  "labels": [
+    -1,
+    0,
+    1
+  ],
+  "accuracy": 0.4606741573033708,
+  "macro_f1": 0.3809682064916362,
+  "naive_baselines": {
+    "majority_class": {
+      "description": "Always predicts the most common training label.",
+      "predicted_label": 1,
+      "accuracy": 0.5168539325842697,
+      "macro_f1": 0.2271604938271605
+    },
+    "stratified_random": {
+      "description": "Randomly predicts labels using the training label distribution.",
+      "accuracy": 0.4943820224719101,
+      "macro_f1": 0.41441467396523574
+    },
+    "ticker_prior": {
+      "description": "Predicts each ticker's most common training label, falling back to the global majority.",
+      "accuracy": 0.43820224719101125,
+      "macro_f1": 0.2347061175529788
+    }
+  },
+  "classification_report": {
+    "-1": {
+      "precision": 0.3225806451612903,
+      "recall": 0.35714285714285715,
+      "f1-score": 0.3389830508474576,
+      "support": 28.0
+    },
+    "0": {
+      "precision": 1.0,
+      "recall": 0.13333333333333333,
+      "f1-score": 0.23529411764705882,
+      "support": 15.0
+    },
+    "1": {
+      "precision": 0.5178571428571429,
+      "recall": 0.6304347826086957,
+      "f1-score": 0.5686274509803921,
+      "support": 46.0
+    },
+    "accuracy": 0.4606741573033708,
+    "macro avg": {
+      "precision": 0.613479262672811,
+      "recall": 0.37363699102829545,
+      "f1-score": 0.3809682064916362,
+      "support": 89.0
+    },
+    "weighted avg": {
+      "precision": 0.5376818723139853,
+      "recall": 0.4606741573033708,
+      "f1-score": 0.44019999925317677,
+      "support": 89.0
+    }
+  }
+}
