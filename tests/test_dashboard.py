@@ -6,6 +6,8 @@ from trading_sentiment.dashboard import (
     build_metric_score_chart,
     build_prediction_signal_counts,
     build_return_chart,
+    build_weekly_actual_returns,
+    build_weekly_signal_strength,
     build_weekly_signal_timeline,
     collect_tickers,
     filter_by_tickers,
@@ -154,6 +156,75 @@ def test_build_weekly_signal_timeline_can_include_empty_weeks():
             "prediction_count": 1,
         },
     ]
+
+
+def test_build_weekly_signal_strength_uses_signed_prediction_confidence():
+    predictions = pd.DataFrame(
+        [
+            {
+                "ticker": "AAPL",
+                "date": "2024-09-30",
+                "predicted_label": 1,
+                "prediction_confidence": 0.8,
+            },
+            {
+                "ticker": "AAPL",
+                "date": "2024-10-01",
+                "predicted_label": -1,
+                "prediction_confidence": 0.4,
+            },
+            {
+                "ticker": "AAPL",
+                "date": "2024-10-14",
+                "predicted_label": -1,
+                "prediction_confidence": 0.6,
+            },
+        ]
+    )
+
+    strength = build_weekly_signal_strength(predictions, include_empty_weeks=True)
+
+    assert strength[["ticker", "week_start", "prediction_count"]].to_dict("records") == [
+        {
+            "ticker": "AAPL",
+            "week_start": "2024-09-30",
+            "prediction_count": 2,
+        },
+        {
+            "ticker": "AAPL",
+            "week_start": "2024-10-07",
+            "prediction_count": 0,
+        },
+        {
+            "ticker": "AAPL",
+            "week_start": "2024-10-14",
+            "prediction_count": 1,
+        },
+    ]
+    assert strength["signal_strength"].iloc[0] == 0.2
+    assert pd.isna(strength["signal_strength"].iloc[1])
+    assert strength["signal_strength"].iloc[2] == -0.6
+
+
+def test_build_weekly_actual_returns_compounds_future_returns_by_week():
+    predictions = pd.DataFrame(
+        [
+            {"ticker": "AAPL", "date": "2024-09-30", "future_return": 0.1},
+            {"ticker": "AAPL", "date": "2024-10-01", "future_return": -0.05},
+            {"ticker": "AAPL", "date": "2024-10-14", "future_return": 0.02},
+        ]
+    )
+
+    returns = build_weekly_actual_returns(predictions, include_empty_weeks=True)
+
+    assert returns[["ticker", "week_start", "return_count"]].to_dict("records") == [
+        {"ticker": "AAPL", "week_start": "2024-09-30", "return_count": 2},
+        {"ticker": "AAPL", "week_start": "2024-10-07", "return_count": 0},
+        {"ticker": "AAPL", "week_start": "2024-10-14", "return_count": 1},
+    ]
+    assert round(returns["actual_return"].iloc[0], 4) == 0.045
+    assert pd.isna(returns["actual_return"].iloc[1])
+    assert round(returns["actual_return"].iloc[2], 4) == 0.02
 
 
 def test_build_return_chart_compares_strategy_to_buy_hold():
